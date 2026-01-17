@@ -178,9 +178,26 @@ SELECT
 ### 在 Ubuntu / Debian 安裝
 
 ```bash
-# 請根據您的 PostgreSQL 版本更換數字
 sudo apt-get update
 sudo apt-get install postgresql-18-plpgsql-check
+```
+
+### 啟用 shared_preload_libraries
+```conf
+# edit /etc/postgresql/18/main/postgresql.conf
+shared_preload_libraries = 'plpgsql_check'
+plpgsql_check.show_performance_warnings = on
+plpgsql_check.enable_tracer = on
+```
+
+```bash
+sudo systemctl restart postgresql
+```
+
+```sql
+CREATE EXTENSION IF NOT EXISTS plpgsql_check;
+SELECT * FROM pg_extension WHERE extname = 'plpgsql_check';
+SHOW shared_preload_libraries;
 ```
 
 ### 在 Docker 環境安裝
@@ -198,10 +215,8 @@ RUN apt-get update && apt-get install -y postgresql-18-plpgsql-check && rm -rf /
 ### 在資料庫中啟用 (必須執行)
 
 ```sql
--- 啟用擴充功能
-CREATE EXTENSION plpgsql_check;
+CREATE EXTENSION IF NOT EXISTS plpgsql_check;
 
--- 檢查是否安裝成功
 SELECT * FROM pg_extension WHERE extname = 'plpgsql_check';
 ```
 
@@ -211,7 +226,7 @@ SELECT * FROM pg_extension WHERE extname = 'plpgsql_check';
 SELECT * FROM plpgsql_check_function_tb('your_function_name(arg1_type, arg2_type)');
 ```
 
-### 批次檢查全資料庫函式
+### 所有 PL/pgSQL 函數並回報錯誤
 
 ```sql
 SELECT 
