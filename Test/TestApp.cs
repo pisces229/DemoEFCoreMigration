@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Model.Definitions;
 using Model.Entities;
-using Model.ValueObjects;
+using Model.JsonObjects;
 
 namespace Test;
 
@@ -25,8 +25,8 @@ public class TestApp : BaseTest
             //DateTime = DateTime.UtcNow,
             //DateTimeOffset = DateTimeOffset.Now,
             //DateTimeOffset = DateTimeOffset.UtcNow,
-            DateValueObject = new DateValueObject(DateTime.UtcNow.AddDays(0), DateTime.UtcNow.AddDays(1)),
-            DateValueObjects = [
+            ValueJsonObject = new ValueJsonObject(DateTime.UtcNow.AddDays(0), DateTime.UtcNow.AddDays(1)),
+            ValueJsonObjects = [
                 new (DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(1)),
                 new (DateTime.UtcNow.AddDays(2), DateTime.UtcNow.AddDays(3))
             ],
@@ -86,12 +86,12 @@ public class TestApp : BaseTest
         var appTables = await _dbContext.AppTable.ToListAsync();
         foreach (var appTable in appTables)
         {
-            if (appTable.DateValueObject != null)
+            if (appTable.ValueJsonObject != null)
             {
-                Console.WriteLine($"DateValueObject.Start:{appTable.DateValueObject.StartDate}");
-                Console.WriteLine($"DateValueObject.End:{appTable.DateValueObject.EndDate}");
+                Console.WriteLine($"DateValueObject.Start:{appTable.ValueJsonObject.StartDate}");
+                Console.WriteLine($"DateValueObject.End:{appTable.ValueJsonObject.EndDate}");
             }
-            foreach (var dateValueObject in appTable.DateValueObjects)
+            foreach (var dateValueObject in appTable.ValueJsonObjects)
             {
                 Console.WriteLine($"DateValueObjects.Start:{dateValueObject.StartDate}");
                 Console.WriteLine($"DateValueObjects.End:{dateValueObject.EndDate}");

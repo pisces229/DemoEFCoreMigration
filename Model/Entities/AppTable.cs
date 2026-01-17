@@ -1,5 +1,5 @@
 using Model.Definitions;
-using Model.ValueObjects;
+using Model.JsonObjects;
 
 namespace Model.Entities;
 
@@ -14,8 +14,8 @@ public partial class AppTable
     public DateOnly? DateOnly { get; set; }
     public DateTime? DateTime { get; set; }
     public DateTimeOffset? DateTimeOffset { get; set; }
-    public DateValueObject? DateValueObject { get; set; }
-    public IEnumerable<DateValueObject> DateValueObjects { get; set; } = [];
+    public ValueJsonObject? ValueJsonObject { get; set; }
+    public IEnumerable<ValueJsonObject> ValueJsonObjects { get; set; } = [];
     /// <summary>
     /// Sql Server RowVersion
     /// </summary>

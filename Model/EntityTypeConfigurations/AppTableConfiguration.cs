@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Model.Definitions;
 using Model.Entities;
+using Model.JsonObjects;
 
 namespace Model.EntityTypeConfigurations;
 
@@ -55,14 +56,14 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         //builder.Property(e => e.DateTime).HasColumnType(DbColumnType.TimestampWithoutTimeZone);
         builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithTimeZone);
         //builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithoutTimeZone);
-        builder.Property(e => e.DateValueObject)
+        builder.Property(e => e.ValueJsonObject)
             .HasColumnType(DbColumnType.Jsonb)
-            .HasConversion<DateValueObjectConverter>()
-            .Metadata.SetValueComparer(new DateValueObjectComparer());
-        builder.Property(e => e.DateValueObjects)
+            .HasConversion<ValueJsonObjectConverter>()
+            .Metadata.SetValueComparer(new ValueJsonObjectComparer());
+        builder.Property(e => e.ValueJsonObjects)
             .HasColumnType(DbColumnType.Jsonb)
-            .HasConversion<DateValueObjectListConverter>()
-            .Metadata.SetValueComparer(new DateValueObjectListComparer());
+            .HasConversion<ValueJsonObjectListConverter>()
+            .Metadata.SetValueComparer(new ValueJsonObjectListComparer());
         // SqlServer Concurrency Token
         //builder.Property(e => e.RowVersion)
         //    .HasColumnType(DbColumnType.Timestamp)

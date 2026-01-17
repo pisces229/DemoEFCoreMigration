@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Model.ValueObjects;
-using System.Text.Json;
 
 namespace Model;
 
@@ -39,24 +37,3 @@ public class NullableDateTimeWithoutZoneConverter : ValueConverter<DateTime?, Da
     )
     { }
 }
-
-public class DateValueObjectConverter : ValueConverter<DateValueObject?, string>
-{
-    public DateValueObjectConverter() : base(
-        v => JsonSerializer.Serialize(v, DbContextUtil.JsonOptions),
-        v => JsonSerializer.Deserialize<DateValueObject>(v, DbContextUtil.JsonOptions)!
-    )
-    { }
-}
-
-public class DateValueObjectListConverter : ValueConverter<IEnumerable<DateValueObject>, string>
-{
-    public DateValueObjectListConverter() : base(
-        v => JsonSerializer.Serialize(v, DbContextUtil.JsonOptions),
-        v => JsonSerializer.Deserialize<List<DateValueObject>>(v, DbContextUtil.JsonOptions) ?? new List<DateValueObject>()
-    )
-    { }
-}
-
-
-
