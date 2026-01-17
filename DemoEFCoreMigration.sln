@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11111.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{AE683147-6B7C-4DA7-8323-FE3DF9E18D27}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbMigration", "DbMigration\DbMigration.csproj", "{7DFFD520-CCCE-4884-A52A-08D51EAEF5AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{07F4468A-2102-47B8-B76B-06C7057C1B41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{23F63735-8CD2-4359-9362-0CBD88C66E86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "方案項目", "方案項目", "{6DCE96E2-77BC-477D-AC33-AB78CF0805AF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Packages.props = Directory.Packages.props
+		PostgreSQL.md = PostgreSQL.md
+		Dockerfile.plpgsql-check = Dockerfile.plpgsql-check
+		README.md = README.md
+		Sqlite.md = Sqlite.md
+		SqlServer.md = SqlServer.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE683147-6B7C-4DA7-8323-FE3DF9E18D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE683147-6B7C-4DA7-8323-FE3DF9E18D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE683147-6B7C-4DA7-8323-FE3DF9E18D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE683147-6B7C-4DA7-8323-FE3DF9E18D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DFFD520-CCCE-4884-A52A-08D51EAEF5AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DFFD520-CCCE-4884-A52A-08D51EAEF5AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DFFD520-CCCE-4884-A52A-08D51EAEF5AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DFFD520-CCCE-4884-A52A-08D51EAEF5AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07F4468A-2102-47B8-B76B-06C7057C1B41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07F4468A-2102-47B8-B76B-06C7057C1B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07F4468A-2102-47B8-B76B-06C7057C1B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07F4468A-2102-47B8-B76B-06C7057C1B41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23F63735-8CD2-4359-9362-0CBD88C66E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23F63735-8CD2-4359-9362-0CBD88C66E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23F63735-8CD2-4359-9362-0CBD88C66E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23F63735-8CD2-4359-9362-0CBD88C66E86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F625F644-FA40-4264-8581-6E59696C5E5F}
+	EndGlobalSection
+EndGlobal
