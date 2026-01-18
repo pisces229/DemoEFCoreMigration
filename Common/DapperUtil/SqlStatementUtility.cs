@@ -61,6 +61,5 @@ public static class SqlStatementUtility
             return dateTime.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
         else
             return value.ToString()!;
-
     }
 }

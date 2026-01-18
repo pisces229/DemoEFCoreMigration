@@ -1,4 +1,3 @@
-using Model.Entities;
 using System.Text.Json;
 
 namespace Model;
@@ -15,12 +14,14 @@ internal class DbContextUtil
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
+    public static string NamingConvention(string name) => ToSnakeCase(name);
+
     public static string ToSnakeCase(string name) =>
         string.Concat(name.Select((c, i) => i > 0 && char.IsUpper(c) ? "_" + c : c.ToString())).ToLower();
 
     public static string CreateForeignKey(string table, string name) =>
-        string.Format("fk__{0}__{1}", ToSnakeCase(table), ToSnakeCase(name));
+        string.Format("fk__{0}__{1}", NamingConvention(table), NamingConvention(name));
 
     public static string DropConstraintScript(string table, string name) =>
-        string.Format("ALTER TABLE IF EXISTS {0} DROP CONSTRAINT IF EXISTS {1};", ToSnakeCase(table), name);
+        string.Format("ALTER TABLE IF EXISTS {0} DROP CONSTRAINT IF EXISTS {1};", NamingConvention(table), NamingConvention(name));
 }

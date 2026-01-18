@@ -2,7 +2,7 @@ namespace Model.Scripts;
 
 public class FuncTableWithParam
 {
-    public static readonly string Name = DbContextUtil.ToSnakeCase(nameof(FuncTableWithParam));
+    public static readonly string Name = DbContextUtil.NamingConvention(nameof(FuncTableWithParam));
 
     //public static readonly string Skip = "-- Skip";
 

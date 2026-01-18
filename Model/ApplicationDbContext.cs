@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Model.Definitions;
 using Model.Entities;
 using Model.Queries;
 using System.Reflection;
@@ -35,13 +36,22 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     #region DbFunction
     public virtual DbSet<EmptyDbSet> EmptyDbSet { get; set; }
+    /// <summary>
+    /// FuncTable
+    /// </summary>
     public IQueryable<FuncTableResult> FuncTable() => FromExpression(() => FuncTable());
-
+    /// <summary>
+    /// FuncTableWithParam
+    /// </summary>
     public IQueryable<FuncTableWithParamResult> FuncTableWithParam(FuncTableWithParamInput input) => FuncTableWithParam(input.Id);
     public IQueryable<FuncTableWithParamResult> FuncTableWithParam(long id) => FromExpression(() => FuncTableWithParam(id));
-
+    /// <summary>
+    /// FuncScalar
+    /// </summary>
     public int FuncScalar() => throw new NotSupportedException();
-
+    /// <summary>
+    /// FuncScalarWithParam
+    /// </summary>
     public int FuncScalarWithParam(FuncScalarWithParamInput input) => FuncScalarWithParam(input.Id);
     public int FuncScalarWithParam(long id) => throw new NotSupportedException();
     #endregion
@@ -52,43 +62,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        //foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        //{
-        //    foreach (var property in entityType.ClrType.GetProperties())
-        //    {
-        //        if (PropertyValueComparer.Mappers.TryGetValue(property.PropertyType, out ValueComparer? valueComparer))
-        //        {
-        //            modelBuilder
-        //                .Entity(entityType.Name)
-        //                .Property(property.Name)
-        //                .Metadata
-        //                .SetValueComparer(valueComparer);
-        //        }
-        //    }
-        //}
-
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        {
-            var IgnoreForeignKeys = entityType.GetForeignKeys()
-                .Where(e => (e.GetConstraintName() ?? "").StartsWith("Ignore", StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            foreach (var foreignKey in IgnoreForeignKeys)
-            {
-                foreignKey.DeclaringEntityType.RemoveForeignKey(foreignKey);
-            }
-        }
-
         modelBuilder.RegisterFunctions();
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         configurationBuilder.Properties<DateTime>()
-            .HaveColumnType("timestamp without time zone")
+            .HaveColumnType(DbColumnType.TimestampWithTimeZone)
             .HaveConversion<DateTimeWithoutZoneConverter>();
         configurationBuilder.Properties<DateTime?>()
-            .HaveColumnType("timestamp without time zone")
+            .HaveColumnType(DbColumnType.TimestampWithTimeZone)
             .HaveConversion<NullableDateTimeWithoutZoneConverter>();
     }
 }

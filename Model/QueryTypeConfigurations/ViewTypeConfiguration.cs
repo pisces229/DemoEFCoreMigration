@@ -11,11 +11,5 @@ public class ViewTypeConfiguration : IEntityTypeConfiguration<ViewResult>
         builder.ToView(Scripts.View.Name);
 
         builder.HasKey(v => v.Id);
-
-        builder.Property(e => e.Id)
-            .HasColumnName(DbContextUtil.ToSnakeCase(nameof(ViewResult.Id)));
-        builder.Property(e => e.Name)
-            .HasColumnName(DbContextUtil.ToSnakeCase(nameof(ViewResult.Name)));
-
     }
 }

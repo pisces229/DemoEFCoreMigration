@@ -2,7 +2,7 @@ namespace Model.Scripts;
 
 public class View
 {
-    public static readonly string Name = DbContextUtil.ToSnakeCase(nameof(View));
+    public static readonly string Name = DbContextUtil.NamingConvention(nameof(View));
 
     //public static readonly string Skip = "-- Skip";
 

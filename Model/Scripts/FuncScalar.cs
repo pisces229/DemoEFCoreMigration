@@ -2,7 +2,7 @@ namespace Model.Scripts;
 
 public class FuncScalar
 {
-    public static readonly string Name = DbContextUtil.ToSnakeCase(nameof(FuncScalar));
+    public static readonly string Name = DbContextUtil.NamingConvention(nameof(FuncScalar));
 
     //public static readonly string Skip = "-- Skip";
 

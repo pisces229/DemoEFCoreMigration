@@ -1,6 +1,6 @@
 namespace Model.Definitions;
 
-public class DbColumnType
+internal class DbColumnType
 {
     public const string TimestampWithTimeZone = "timestamp with time zone";
     public const string TimestampWithoutTimeZone = "timestamp without time zone";

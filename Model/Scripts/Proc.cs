@@ -2,7 +2,7 @@ namespace Model.Scripts;
 
 public class Proc
 {
-    public static readonly string Name = DbContextUtil.ToSnakeCase(nameof(Proc));
+    public static readonly string Name = DbContextUtil.NamingConvention(nameof(Proc));
 
     //public static readonly string Skip = "-- Skip";
 
