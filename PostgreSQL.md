@@ -238,6 +238,8 @@ JOIN
     pg_namespace n ON p.pronamespace = n.oid
 CROSS JOIN LATERAL 
     plpgsql_check_function_tb(p.oid) AS check_res
+--LEFT CROSS JOIN LATERAL 
+--    plpgsql_check_function_tb(p.oid) AS check_res ON TRUE
 WHERE 
     n.nspname NOT IN ('pg_catalog', 'information_schema')
     AND p.prolang = (SELECT oid FROM pg_language WHERE lanname = 'plpgsql');

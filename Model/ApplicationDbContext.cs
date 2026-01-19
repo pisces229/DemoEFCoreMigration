@@ -69,9 +69,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         configurationBuilder.Properties<DateTime>()
             .HaveColumnType(DbColumnType.TimestampWithTimeZone)
-            .HaveConversion<DateTimeWithoutZoneConverter>();
+            .HaveConversion<DateTimeWithZoneConverter>();
         configurationBuilder.Properties<DateTime?>()
             .HaveColumnType(DbColumnType.TimestampWithTimeZone)
-            .HaveConversion<NullableDateTimeWithoutZoneConverter>();
+            .HaveConversion<NullableDateTimeWithZoneConverter>();
     }
 }

@@ -26,9 +26,8 @@ public class DbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext
             case "PostgreSQL":
                 dbContextOptionsBuilder.UseNpgsql(configurationRoot.GetConnectionString("PostgreSQL"),
                     x => x.MigrationsHistoryTable("__ef_migrations_history"))
-                    .UseSnakeCaseNamingConvention();
-                // call plpgsql_check
-                 //dbContextOptionsBuilder.ReplaceService<IMigrationsSqlGenerator, UsageNpgsqlMigrationsSqlGenerator>();
+                    .UseSnakeCaseNamingConvention()
+                    .ReplaceService<IMigrationsSqlGenerator, UsageNpgsqlMigrationsSqlGenerator>();
                 break;
             case "Sqlite":
                 dbContextOptionsBuilder.UseSqlite(configurationRoot.GetConnectionString("Sqlite"));

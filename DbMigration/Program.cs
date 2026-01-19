@@ -39,6 +39,10 @@ try
             if (pendingMigrations.Any())
             {
                 Console.WriteLine("Database has pending migrations...");
+                foreach (var pendingMigration in pendingMigrations)
+                {
+                    Console.WriteLine($"PendingMigration: {pendingMigration}");
+                }
                 await dbContext.Database.GetService<IMigrator>().MigrateAsync();
                 //foreach (var pendingMigration in pendingMigrations)
                 //{
