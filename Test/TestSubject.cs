@@ -87,7 +87,7 @@ public class TestSubject : BaseTest
                 .GroupJoin(
                     _dbContext.SubjectFirstContent,
                     s => s.Id,
-                    c => c.ParentId,
+                    c => c.ReferenceId,
                     (s, cGroup) => new
                     {
                         Subject = s,
@@ -109,7 +109,7 @@ public class TestSubject : BaseTest
                 .GroupJoin(
                     _dbContext.SubjectSecondContent,
                     s => s.Id,
-                    c => c.ParentId,
+                    c => c.ReferenceId,
                     (s, cGroup) => new
                     {
                         Subject = s,
@@ -135,8 +135,8 @@ public class TestSubject : BaseTest
             var entities = await _dbContext.SubjectContent.ToListAsync();
             foreach (var entity in entities)
             {
-                Console.WriteLine(entity.ParentId);
-                Console.WriteLine(entity.Type);
+                Console.WriteLine(entity.ReferenceId);
+                Console.WriteLine(entity.ReferenceType);
                 Console.WriteLine(entity.Content);
             }
         }
@@ -144,8 +144,8 @@ public class TestSubject : BaseTest
             var entities = await _dbContext.SubjectFirstContent.ToListAsync();
             foreach (var entity in entities)
             {
-                Console.WriteLine(entity.ParentId);
-                Console.WriteLine(entity.Type);
+                Console.WriteLine(entity.ReferenceId);
+                Console.WriteLine(entity.ReferenceType);
                 Console.WriteLine(entity.Content);
             }
         }
@@ -153,8 +153,8 @@ public class TestSubject : BaseTest
             var entities = await _dbContext.SubjectSecondContent.ToListAsync();
             foreach (var entity in entities)
             {
-                Console.WriteLine(entity.ParentId);
-                Console.WriteLine(entity.Type);
+                Console.WriteLine(entity.ReferenceId);
+                Console.WriteLine(entity.ReferenceType);
                 Console.WriteLine(entity.Content);
             }
         }

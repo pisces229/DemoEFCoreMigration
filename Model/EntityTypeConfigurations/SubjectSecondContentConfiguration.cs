@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Model.Definitions;
 using Model.Entities;
+using Model.Names;
 
 namespace Model.EntityTypeConfigurations;
 
@@ -10,8 +12,8 @@ public class SubjectSecondContentConfiguration : IEntityTypeConfiguration<Subjec
     {
         builder.HasOne(e => e.Subject)
             .WithMany(e => e.Contents)
-            .HasForeignKey(e => e.ParentId)
+            .HasForeignKey(e => e.ReferenceId)
             .OnDelete(DeleteBehavior.ClientCascade)
-            .HasConstraintName(SubjectSecondContentForeignKey.ParentId);
+            .HasConstraintName(SubjectContentConstraintName.Discriminators[SubjectContentReferenceType.Second]);
     }
 }

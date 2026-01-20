@@ -22,9 +22,3 @@ public enum Flag
     Third = 1 << 2,
     Fourth = 1 << 3,
 }
-
-public enum SubjectContentType
-{
-    First,
-    Second,
-}

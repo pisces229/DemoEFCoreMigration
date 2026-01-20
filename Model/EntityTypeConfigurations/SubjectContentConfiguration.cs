@@ -16,14 +16,14 @@ public class SubjectContentConfiguration : IEntityTypeConfiguration<SubjectConte
 
         builder.HasKey(e => e.Id);
 
-        builder.HasDiscriminator(e => e.Type)
-            .HasValue<SubjectFirstContent>(SubjectContentType.First)
-            .HasValue<SubjectSecondContent>(SubjectContentType.Second);
+        builder.HasDiscriminator(e => e.ReferenceType)
+            .HasValue<SubjectFirstContent>(SubjectContentReferenceType.First)
+            .HasValue<SubjectSecondContent>(SubjectContentReferenceType.Second);
 
         //builder.HasQueryFilter(c => c.Type == SubjectContentType.First || c.Type == SubjectContentType.Second);
 
         builder.Property(e => e.Content).HasMaxLength(50).IsRequired();
 
-        builder.HasIndex(e => new { e.ParentId, e.Type });
+        builder.HasIndex(e => new { e.ReferenceId, e.ReferenceType });
     }
 }

@@ -19,9 +19,15 @@ internal class DbContextUtil
     public static string ToSnakeCase(string name) =>
         string.Concat(name.Select((c, i) => i > 0 && char.IsUpper(c) ? "_" + c : c.ToString())).ToLower();
 
+    public static string CreateIndexKey(string table, string name) =>
+        $"ix__{ToSnakeCase(table)}__{ToSnakeCase(name)}";
+
     public static string CreateForeignKey(string table, string name) =>
-        string.Format("fk__{0}__{1}", NamingConvention(table), NamingConvention(name));
+        $"fk__{ToSnakeCase(table)}__{ToSnakeCase(name)}";
 
     public static string DropConstraintScript(string table, string name) =>
-        string.Format("ALTER TABLE IF EXISTS {0} DROP CONSTRAINT IF EXISTS {1};", NamingConvention(table), NamingConvention(name));
+        $"ALTER TABLE IF EXISTS {ToSnakeCase(table)} DROP CONSTRAINT IF EXISTS {ToSnakeCase(name)};";
+
+    public static string DropConstraintScript(string table, IEnumerable<string> names) =>
+        string.Join(Environment.NewLine, names.Select(name => $"ALTER TABLE IF EXISTS {ToSnakeCase(table)} DROP CONSTRAINT IF EXISTS {ToSnakeCase(name)};"));
 }

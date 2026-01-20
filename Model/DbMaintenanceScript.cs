@@ -1,21 +1,15 @@
 using Model.Entities;
+using Model.Names;
 
 namespace Model;
 
 public class DbMaintenanceScript
 {
     /// <summary>
-    /// SubjectContent
+    /// Drop Discriminator Script
     /// </summary>
-    private static readonly string DropSubjectContentConstraintScript = @$"
-        {DbContextUtil.DropConstraintScript(nameof(SubjectContent), SubjectFirstContentForeignKey.ParentId)}
-        {DbContextUtil.DropConstraintScript(nameof(SubjectContent), SubjectSecondContentForeignKey.ParentId)}
-    ";
-    /// <summary>
-    /// Drop Constraint Script
-    /// </summary>
-    public static readonly string DropConstraintScript = @$"
-        {DropSubjectContentConstraintScript}
+    public static readonly string DropDiscriminatorScript = @$"
+        {SubjectContentConstraintName.DropDiscriminators}
     ";
     /// <summary>
     /// CREATE EXTENSION plpgsql_check
