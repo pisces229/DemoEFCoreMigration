@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Model.Definitions;
 using Model.Entities;
 using Model.JsonObjects;
@@ -10,7 +11,12 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
 {
     public void Configure(EntityTypeBuilder<AppTable> builder)
     {
-        builder.ToTable(t => t.HasComment("AppTable"));
+        builder.ToTable(t => t.HasComment(nameof(AppTable)));
+
+        builder.ToTable(t => t.HasCheckConstraint(
+            DbContextUtil.CreateCheckConstraint(nameof(AppTable), nameof(AppTable.Int)),
+            $"{DbContextUtil.ToSnakeCase(nameof(AppTable.Int))} > 0"
+        ));
 
         builder.HasKey(e => e.Id);
 
@@ -23,28 +29,9 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         // new BoolToStringConverter("N", "Y")
         // new BoolToZeroOneConverter<int>()
 
-        // [Objects]
-        //builder.Property(e => e.[Class])
-        //    .HasConversion(
-        //    // Write
-        //    v => v.[Property],
-        //    // Read
-        //    v => new [Class] { [Property] = v }); ;
-
         // [GUID]
         // new GuidToBytesConverter()
         // new GuidToStringConverter()
-
-        // [JSON]
-        //builder.Property(e => e.[Property])
-        //    .HasConversion(
-        //        v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-        //        v => System.Text.Json.JsonSerializer.Deserialize<List<string>>(v, (System.Text.Json.JsonSerializerOptions)null),
-        //        // Option：Configure a Value Comparer so that EF Core can correctly detect changes.
-        //        new ValueComparer<List<string>>(
-        //            (c1, c2) => c1.SequenceEqual(c2),
-        //            c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-        //            c => c.ToList()));
 
         builder.Property(e => e.Enum);
         builder.Property(e => e.String).HasMaxLength(100);
@@ -73,5 +60,9 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         builder.Property(e => e.RowVersion)
             .IsRowVersion()
             .IsConcurrencyToken();
+
+        builder.HasIndex(e => e.String)
+            .IsUnique()
+            .HasFilter($"{DbContextUtil.ToSnakeCase(nameof(AppTable.String))} IS NOT NULL");
     }
 }

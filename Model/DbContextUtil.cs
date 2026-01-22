@@ -1,3 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.IO.Hashing;
+using System.Reflection;
+using System.Text;
 using System.Text.Json;
 
 namespace Model;
@@ -7,7 +13,19 @@ namespace Model;
 /// </summary>
 internal class DbContextUtil
 {
+    /// <summary>
+    /// Schema
+    /// </summary>
     public const string Schema = "public";
+    /// <summary>
+    /// Max TableName Length
+    /// Max Name: 63 (PostgreSQL), Max TableName Length: 55 (63 - 2 - 6)
+    /// </summary>
+    public const int MaxTableNameLength = 63 - 2 - HashNameLength;
+    /// <summary>
+    /// Hash Name Length
+    /// </summary>
+    public const int HashNameLength = 6;
 
     public static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -19,15 +37,92 @@ internal class DbContextUtil
     public static string ToSnakeCase(string name) =>
         string.Concat(name.Select((c, i) => i > 0 && char.IsUpper(c) ? "_" + c : c.ToString())).ToLower();
 
-    public static string CreateIndexKey(string table, string name) =>
-        $"ix__{ToSnakeCase(table)}__{ToSnakeCase(name)}";
+    public static void HashKeyName(IMutableKey mutableKey)
+    {
+        //Console.WriteLine($"mutableKey.DeclaringEntityType.GetTableName(): {mutableKey.DeclaringEntityType.GetTableName()}");
+        //Console.WriteLine($"mutableKey.IsPrimaryKey(): {mutableKey.IsPrimaryKey()}");
+        //Console.WriteLine($"mutableKey.GetName(): {mutableKey.GetName()}");
+        //Console.WriteLine($"mutableKey.GetDefaultName(): {mutableKey.GetDefaultName()}");
 
-    public static string CreateForeignKey(string table, string name) =>
-        $"fk__{ToSnakeCase(table)}__{ToSnakeCase(name)}";
+        if (string.IsNullOrWhiteSpace(mutableKey.GetName())) return;
 
-    public static string DropConstraintScript(string table, string name) =>
-        $"ALTER TABLE IF EXISTS {ToSnakeCase(table)} DROP CONSTRAINT IF EXISTS {ToSnakeCase(name)};";
+        var depTable = mutableKey.DeclaringEntityType.GetTableName();
+        if (mutableKey.IsPrimaryKey())
+        {
+            mutableKey.SetName(CreatePrimaryKeyName(depTable!));
+        }
+        else
+        {
+            var colNames = string.Join("|", mutableKey.Properties.Select(p => p.Name));
+            var hashName = ToHashName($"{colNames}");
+            mutableKey.SetName(CreateAlternateKeyName(depTable!, hashName));
+        }
+    }
 
-    public static string DropConstraintScript(string table, IEnumerable<string> names) =>
-        string.Join(Environment.NewLine, names.Select(name => $"ALTER TABLE IF EXISTS {ToSnakeCase(table)} DROP CONSTRAINT IF EXISTS {ToSnakeCase(name)};"));
+    public static void HashCheckConstraintName(IMutableCheckConstraint mutableCheckConstraint)
+    {
+        //Console.WriteLine($"mutableCheckConstraint.Name: {mutableCheckConstraint.Name}");
+        //Console.WriteLine($"mutableCheckConstraint.Sql: {mutableCheckConstraint.Sql}");
+    }
+
+    public static void HashDatabaseName(IMutableIndex mutableIndex)
+    {
+        //Console.WriteLine($"mutableIndex.DeclaringEntityType.GetTableName(): {mutableIndex.DeclaringEntityType.GetTableName()}");
+        //Console.WriteLine($"mutableIndex.GetDefaultDatabaseName(): {mutableIndex.GetDefaultDatabaseName()}");
+        //Console.WriteLine($"mutableIndex.GetDatabaseName(): {mutableIndex.GetDatabaseName()}");
+        //Console.WriteLine($"mutableIndex.Properties.Count: {mutableIndex.Properties.Count}");
+        //mutableIndex.Properties.ToList().ForEach(p => Console.WriteLine($"mutableIndex.Properties: {p.Name}"));
+
+        if (string.IsNullOrWhiteSpace(mutableIndex.GetDatabaseName())) return;
+
+        var depTable = mutableIndex.DeclaringEntityType.GetTableName();
+        var colNames = string.Join("|", mutableIndex.Properties.Select(p => p.Name));
+        var hashName = ToHashName($"{colNames}");
+        mutableIndex.SetDatabaseName(CreateDatabaseName(depTable!, hashName));
+    }
+
+    public static void HashConstraintName(IMutableForeignKey mutableForeignKey)
+    {
+        //Console.WriteLine($"mutableForeignKey.DeclaringEntityType.GetTableName: {mutableForeignKey.DeclaringEntityType.GetTableName()}");
+        //Console.WriteLine($"mutableForeignKey.PrincipalEntityType.GetTableName: {mutableForeignKey.PrincipalEntityType.GetTableName()}");
+        //Console.WriteLine($"mutableForeignKey.GetDefaultName(): {mutableForeignKey.GetDefaultName()}");
+        //Console.WriteLine($"mutableForeignKey.GetConstraintName(): {mutableForeignKey.GetConstraintName()}");
+        //Console.WriteLine($"mutableForeignKey.Properties.Count: {mutableForeignKey.Properties.Count}");
+        //mutableForeignKey.Properties.ToList().ForEach(p => Console.WriteLine($"mutableForeignKey.Properties: {p.Name}"));
+
+        if (string.IsNullOrWhiteSpace(mutableForeignKey.GetConstraintName())) return;
+        if (mutableForeignKey.GetConstraintName()!.StartsWith($"d_")) return;
+
+        var depTable = mutableForeignKey.DeclaringEntityType.GetTableName();
+        //var priTable = mutableForeignKey.PrincipalEntityType.GetTableName();
+        var colNames = string.Join("|", mutableForeignKey.Properties.Select(p => p.Name));
+        var hashName = ToHashName($"{colNames}");
+        mutableForeignKey.SetConstraintName(CreateConstraintName(depTable!, hashName));
+    }
+
+    public static string ToHashName(string name)
+    {
+        var inputBytes = Encoding.UTF8.GetBytes(name);
+        var hashBytes = XxHash64.Hash(inputBytes);
+        Array.Reverse(hashBytes);
+        return Convert.ToHexString(hashBytes).ToLowerInvariant()[..HashNameLength];
+    }
+
+    public static string CreateCheckConstraint(string table, string name) =>
+        $"ck_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+
+    public static string CreatePrimaryKeyName(string table) =>
+        $"p_{ToSnakeCase(table)}";
+
+    public static string CreateAlternateKeyName(string table, string name) =>
+        $"a_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+
+    public static string CreateDatabaseName(string table, string name) =>
+        $"i_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+
+    public static string CreateConstraintName(string table, string name) =>
+        $"f_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+
+    public static string DropConstraintName(string table, string name) =>
+        $"d_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
 }

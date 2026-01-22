@@ -6,10 +6,27 @@ namespace Model;
 public class DbMaintenanceScript
 {
     /// <summary>
-    /// Drop Discriminator Script
+    /// Drop Constraint Script
     /// </summary>
-    public static readonly string DropDiscriminatorScript = @$"
-        {SubjectContentConstraintName.DropDiscriminators}
+    public static readonly string DropConstraintScript = @$"
+        DO $$ 
+        DECLARE 
+            r RECORD;
+        BEGIN
+            FOR r IN (
+                SELECT 
+                    conname, 
+                    conrelid::regclass AS relname
+                FROM 
+                    pg_constraint 
+                WHERE 
+                    contype = 'f' 
+                    AND conname ILIKE 'd_%'
+            ) LOOP
+                EXECUTE 'ALTER TABLE ' || r.relname || ' DROP CONSTRAINT ' || quote_ident(r.conname);
+                RAISE NOTICE 'Dropped constraint % from table %', r.conname, r.relname;
+            END LOOP;
+        END $$;
     ";
     /// <summary>
     /// CREATE EXTENSION plpgsql_check

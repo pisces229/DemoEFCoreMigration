@@ -58,8 +58,8 @@ try
     }
     // DropConstraintScript
     {
-        Console.WriteLine("DropConstraintScript:" + DbMaintenanceScript.DropDiscriminatorScript);
-        await dbContext.Database.ExecuteSqlRawAsync(DbMaintenanceScript.DropDiscriminatorScript);
+        Console.WriteLine("DropConstraintScript:" + DbMaintenanceScript.DropConstraintScript);
+        await dbContext.Database.ExecuteSqlRawAsync(DbMaintenanceScript.DropConstraintScript);
     }
 
     await new EnsureData(dbContext).RunAsync();

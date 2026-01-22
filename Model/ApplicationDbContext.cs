@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Model.Definitions;
 using Model.Entities;
 using Model.Queries;
+using System;
 using System.Reflection;
 
 namespace Model;
@@ -62,6 +65,34 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+        foreach (var entity in modelBuilder.Model.GetEntityTypes())
+        {
+            if (entity.IsKeyless || string.IsNullOrWhiteSpace(entity.GetTableName()))
+            {
+                continue;
+            }
+            if (entity.GetTableName()!.Length > DbContextUtil.MaxTableNameLength)
+            {
+                throw new InvalidOperationException($"Table name '{entity.GetTableName()}' exceeds maximum length of {DbContextUtil.MaxTableNameLength} characters.");
+            }
+            foreach (var mutableKey in entity.GetKeys())
+            {
+                DbContextUtil.HashKeyName(mutableKey);
+            }
+            foreach (var mutableCheckConstraint in entity.GetCheckConstraints())
+            {
+                DbContextUtil.HashCheckConstraintName(mutableCheckConstraint);
+            }
+            foreach (var mutableIndex in entity.GetIndexes())
+            {
+                DbContextUtil.HashDatabaseName(mutableIndex);
+            }
+            foreach (var mutableForeignKey in entity.GetForeignKeys())
+            {
+                DbContextUtil.HashConstraintName(mutableForeignKey);
+            }
+        }
+
         modelBuilder.RegisterFunctions();
     }
 
@@ -74,4 +105,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HaveColumnType(DbColumnType.TimestampWithTimeZone)
             .HaveConversion<NullableDateTimeWithZoneConverter>();
     }
+
+
+
 }

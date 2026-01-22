@@ -3,30 +3,15 @@ using Model.Entities;
 
 namespace Model.Names;
 
-internal class SubjectContentName
+internal class SubjectContentConstraintName
 {
-    protected static string TableName => nameof(SubjectContent);
-}
-
-internal class SubjectContentDatabaseName : SubjectContentName
-{
-    // add index names here if needed
-}
-
-internal class SubjectContentConstraintName : SubjectContentName
-{
-    //public static string ReferenceId => DbContextUtil.CreateForeignKey(TableName, nameof(SubjectContent.ReferenceId));
-
     public static Dictionary<SubjectContentReferenceType, string> Discriminators => new()
     {
-        [SubjectContentReferenceType.First] = DbContextUtil.CreateForeignKey(
+        [SubjectContentReferenceType.First] = DbContextUtil.DropConstraintName(
             nameof(SubjectFirstContent),
             nameof(SubjectContent.ReferenceId)),
-        [SubjectContentReferenceType.Second] = DbContextUtil.CreateForeignKey(
+        [SubjectContentReferenceType.Second] = DbContextUtil.DropConstraintName(
             nameof(SubjectSecondContent),
             nameof(SubjectContent.ReferenceId))
     };
-
-    public static string DropDiscriminators =>
-        DbContextUtil.DropConstraintScript(TableName, Discriminators.Values);
 }
