@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.IO.Hashing;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
@@ -63,6 +62,8 @@ internal class DbContextUtil
     {
         //Console.WriteLine($"mutableCheckConstraint.Name: {mutableCheckConstraint.Name}");
         //Console.WriteLine($"mutableCheckConstraint.Sql: {mutableCheckConstraint.Sql}");
+
+        if (string.IsNullOrWhiteSpace(mutableCheckConstraint.Name)) return;
     }
 
     public static void HashDatabaseName(IMutableIndex mutableIndex)

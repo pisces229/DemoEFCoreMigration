@@ -1,10 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Model.Definitions;
 using Model.Entities;
 using Model.Queries;
-using System;
 using System.Reflection;
 
 namespace Model;
