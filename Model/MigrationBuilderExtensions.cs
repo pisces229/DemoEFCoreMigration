@@ -14,9 +14,4 @@ public static class MigrationBuilderExtensions
         migrationBuilder.Sql(Proc.Create);
         migrationBuilder.Sql(View.Create);
     }
-    public static void PlpgsqlCheckScript(this MigrationBuilder migrationBuilder)
-    {
-        migrationBuilder.Sql(DbMaintenanceScript.CreatePlpgsqlCheckScript);
-        migrationBuilder.Sql(DbMaintenanceScript.ExcutePlpgsqlCheckScript);
-    }
 }

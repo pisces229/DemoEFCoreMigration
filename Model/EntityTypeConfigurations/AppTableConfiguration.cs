@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Model.Definitions;
 using Model.Entities;
 using Model.JsonObjects;
@@ -14,7 +13,8 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         builder.ToTable(t => t.HasComment(nameof(AppTable)));
 
         builder.ToTable(t => t.HasCheckConstraint(
-            DbContextUtil.CreateCheckConstraint(nameof(AppTable), nameof(AppTable.Int)),
+            DbContextUtil.CreateCheckConstraint(nameof(AppTable),
+            $"{DbContextUtil.ToSnakeCase(nameof(AppTable.Int))} > 0"),
             $"{DbContextUtil.ToSnakeCase(nameof(AppTable.Int))} > 0"
         ));
 
@@ -44,6 +44,10 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         //builder.Property(e => e.DateTime).HasColumnType(DbColumnType.TimestampWithoutTimeZone);
         builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithTimeZone);
         //builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithoutTimeZone);
+        builder.Property(e => e.StringJsonObjects)
+            .HasColumnType(DbColumnType.Jsonb)
+            .HasConversion<StringCollectionConverter>()
+            .Metadata.SetValueComparer(new StringCollectionComparer());
         builder.Property(e => e.ValueJsonObject)
             .HasColumnType(DbColumnType.Jsonb)
             .HasConversion<ValueJsonObjectConverter>()

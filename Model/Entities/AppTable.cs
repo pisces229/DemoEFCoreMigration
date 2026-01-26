@@ -14,6 +14,7 @@ public partial class AppTable
     public DateOnly? DateOnly { get; set; }
     public DateTime? DateTime { get; set; }
     public DateTimeOffset? DateTimeOffset { get; set; }
+    public IEnumerable<string> StringJsonObjects { get; set; } = [];
     public ValueJsonObject? ValueJsonObject { get; set; }
     public IEnumerable<ValueJsonObject> ValueJsonObjects { get; set; } = [];
     /// <summary>

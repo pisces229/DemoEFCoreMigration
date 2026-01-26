@@ -17,10 +17,15 @@ internal class DbContextUtil
     /// </summary>
     public const string Schema = "public";
     /// <summary>
-    /// Max TableName Length
-    /// Max Name: 63 (PostgreSQL), Max TableName Length: 55 (63 - 2 - 6)
+    /// Max Name Length
+    /// Max Name: 63
     /// </summary>
-    public const int MaxTableNameLength = 63 - 2 - HashNameLength;
+    public const int MaxNameLength = 63;
+    /// <summary>
+    /// Max TableName Length
+    /// Max (c/p/i/f/d) Name: 63 (PostgreSQL), Max TableName Length: 55 (63 - 2 - 6)
+    /// </summary>
+    public const int MaxTableNameLength = MaxNameLength - 2 - HashNameLength;
     /// <summary>
     /// Hash Name Length
     /// </summary>
@@ -58,13 +63,12 @@ internal class DbContextUtil
         }
     }
 
-    public static void HashCheckConstraintName(IMutableCheckConstraint mutableCheckConstraint)
-    {
-        //Console.WriteLine($"mutableCheckConstraint.Name: {mutableCheckConstraint.Name}");
-        //Console.WriteLine($"mutableCheckConstraint.Sql: {mutableCheckConstraint.Sql}");
-
-        if (string.IsNullOrWhiteSpace(mutableCheckConstraint.Name)) return;
-    }
+    //public static void HashCheckConstraintName(IMutableCheckConstraint mutableCheckConstraint)
+    //{
+    //    //Console.WriteLine($"mutableCheckConstraint.Name: {mutableCheckConstraint.Name}");
+    //    //Console.WriteLine($"mutableCheckConstraint.Sql: {mutableCheckConstraint.Sql}");
+    //    if (string.IsNullOrWhiteSpace(mutableCheckConstraint.Name)) return;
+    //}
 
     public static void HashDatabaseName(IMutableIndex mutableIndex)
     {
@@ -101,7 +105,7 @@ internal class DbContextUtil
         mutableForeignKey.SetConstraintName(CreateConstraintName(depTable!, hashName));
     }
 
-    public static string ToHashName(string name)
+    private static string ToHashName(string name)
     {
         var inputBytes = Encoding.UTF8.GetBytes(name);
         var hashBytes = XxHash64.Hash(inputBytes);
@@ -109,21 +113,52 @@ internal class DbContextUtil
         return Convert.ToHexString(hashBytes).ToLowerInvariant()[..HashNameLength];
     }
 
-    public static string CreateCheckConstraint(string table, string name) =>
-        $"ck_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+    public static string CreateCheckConstraint(string table, string name)
+    {
+        var result = $"c_{ToSnakeCase(table)}_{ToHashName(name)}";
+        ValidateNameMaxLength(result);
+        return result;
+    }
 
-    public static string CreatePrimaryKeyName(string table) =>
-        $"p_{ToSnakeCase(table)}";
+    public static string CreatePrimaryKeyName(string table)
+    {
+        var result = $"p_{ToSnakeCase(table)}";
+        ValidateNameMaxLength(result);
+        return result;
+    }
 
-    public static string CreateAlternateKeyName(string table, string name) =>
-        $"a_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+    public static string CreateAlternateKeyName(string table, string name)
+    {
+        var result = $"a_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+        return result;
+    }
 
-    public static string CreateDatabaseName(string table, string name) =>
-        $"i_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+    public static string CreateDatabaseName(string table, string name)
+    {
+        var result = $"i_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+        ValidateNameMaxLength(result);
+        return result;
+    }
 
-    public static string CreateConstraintName(string table, string name) =>
-        $"f_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+    public static string CreateConstraintName(string table, string name)
+    {
+        var result = $"f_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+        ValidateNameMaxLength(result);
+        return result;
+    }
 
-    public static string DropConstraintName(string table, string name) =>
-        $"d_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+    public static string DropConstraintName(string table, string name)
+    {
+        var result = $"d_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+        ValidateNameMaxLength(result);
+        return result;
+    }
+
+    private static void ValidateNameMaxLength(string name)
+    {
+        if (name.Length > MaxNameLength)
+        {
+            throw new InvalidOperationException($"Name '{name}' exceeds maximum length of {MaxNameLength} characters.");
+        }
+    }
 }

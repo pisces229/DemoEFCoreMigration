@@ -21,10 +21,13 @@ public class TestApp : BaseTest
         //var dateTimeNow = DateTime.Now;
         _dbContext.AppTable.Add(new AppTable()
         {
+            String = Guid.NewGuid().ToString(),
+            Int = -1,
             //DateTime = dateTimeNow,
             //DateTime = DateTime.UtcNow,
             //DateTimeOffset = DateTimeOffset.Now,
             //DateTimeOffset = DateTimeOffset.UtcNow,
+            StringJsonObjects = ["A", "B", "C"],
             ValueJsonObject = new ValueJsonObject(DateTime.UtcNow.AddDays(0), DateTime.UtcNow.AddDays(1)),
             ValueJsonObjects = [
                 new (DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(1)),
@@ -38,9 +41,12 @@ public class TestApp : BaseTest
     public async Task Query()
     {
         var dateTimeNow = DateTime.Now;
-        var datas = await _dbContext.AppTable.Where(p => p.DateTime <= dateTimeNow).ToListAsync();
+        var datas = await _dbContext.AppTable
+            //.Where(p => p.DateTime <= dateTimeNow)
+            .ToListAsync();
         foreach (var data in datas)
         {
+            Console.WriteLine(string.Join(", ", data.StringJsonObjects));
             if (data.DateTime.HasValue)
             {
                 Console.WriteLine(data.DateTime.Value.Kind);

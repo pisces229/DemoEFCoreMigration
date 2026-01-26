@@ -68,18 +68,29 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 continue;
             }
+            //Console.WriteLine($"DefaultTableName: {entity.GetDefaultTableName()}");
+            //Console.WriteLine($"TableName: {entity.GetTableName()}");
             if (entity.GetTableName()!.Length > DbContextUtil.MaxTableNameLength)
             {
                 throw new InvalidOperationException($"Table name '{entity.GetTableName()}' exceeds maximum length of {DbContextUtil.MaxTableNameLength} characters.");
+            }
+            foreach (var property in entity.GetProperties())
+            {
+                //Console.WriteLine($"DefaultColumnName: {property.GetDefaultColumnName()}");
+                //Console.WriteLine($"ColumnName: {property.GetColumnName()}");
+                if (property.GetColumnName()!.Length > DbContextUtil.MaxNameLength)
+                {
+                    throw new InvalidOperationException($"Column name '{property.GetColumnName()}' in table '{entity.GetTableName()}' exceeds maximum length of {DbContextUtil.MaxNameLength} characters.");
+                }
             }
             foreach (var mutableKey in entity.GetKeys())
             {
                 DbContextUtil.HashKeyName(mutableKey);
             }
-            foreach (var mutableCheckConstraint in entity.GetCheckConstraints())
-            {
-                DbContextUtil.HashCheckConstraintName(mutableCheckConstraint);
-            }
+            //foreach (var mutableCheckConstraint in entity.GetCheckConstraints())
+            //{
+            //    DbContextUtil.HashCheckConstraintName(mutableCheckConstraint);
+            //}
             foreach (var mutableIndex in entity.GetIndexes())
             {
                 DbContextUtil.HashDatabaseName(mutableIndex);
@@ -102,7 +113,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HaveColumnType(DbColumnType.TimestampWithTimeZone)
             .HaveConversion<NullableDateTimeWithZoneConverter>();
     }
-
-
 
 }
