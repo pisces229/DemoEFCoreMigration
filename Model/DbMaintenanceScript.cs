@@ -1,6 +1,3 @@
-using Model.Entities;
-using Model.Names;
-
 namespace Model;
 
 public class DbMaintenanceScript

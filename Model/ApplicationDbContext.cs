@@ -52,7 +52,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     /// <summary>
     /// FuncScalarWithParam
     /// </summary>
-    public int FuncScalarWithParam(FuncScalarWithParamInput input) => FuncScalarWithParam(input.Id);
     public int FuncScalarWithParam(long id) => throw new NotSupportedException();
     #endregion
 
