@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "DbMigration": {
+      "commandName": "Project",
+      "commandLineArgs": "",
+      //"commandLineArgs": "TargetMigration=20250123456789_Init",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
