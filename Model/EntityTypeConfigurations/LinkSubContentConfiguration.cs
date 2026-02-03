@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Model.Definitions;
 using Model.Entities;
 
 namespace Model.EntityTypeConfigurations;
@@ -12,10 +13,9 @@ internal class LinkSubContentConfiguration : IEntityTypeConfiguration<LinkSubCon
 
         builder.HasKey(e => e.Id);
 
-        builder
-            .HasDiscriminator<string>("link_type")
-            .HasValue<LinkFirstSubContent>("first")
-            .HasValue<LinkSecondSubContent>("second");
+        builder.HasDiscriminator(e => e.LinkType)
+            .HasValue<LinkFirstSubContent>(LinkSubContentLinkType.First)
+            .HasValue<LinkSecondSubContent>(LinkSubContentLinkType.Second);
 
         builder.Property(e => e.Content)
             .IsRequired()

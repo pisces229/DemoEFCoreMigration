@@ -23,6 +23,18 @@ public enum Flag
     Fourth = 1 << 3,
 }
 
+public enum SubjectContentReferenceType
+{
+    First,
+    Second,
+}
+
+public enum LinkSubContentLinkType
+{
+    First,
+    Second,
+}
+
 public enum VehicleType
 {
     None,

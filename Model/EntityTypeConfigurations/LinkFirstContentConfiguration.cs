@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Model.Entities;
+using Model.RelEntities;
 
 namespace Model.EntityTypeConfigurations;
 
@@ -18,16 +19,18 @@ internal class LinkFirstContentConfiguration : IEntityTypeConfiguration<LinkFirs
 
         builder.HasMany(p => p.LinkFirstSubContents)
             .WithMany()
-            .UsingEntity<Dictionary<string, string>>(
-                "rel_first_sub_content",
+            .UsingEntity<Dictionary<long, long>>(
+                DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent)),
                 e => e.HasOne<LinkFirstSubContent>()
-                      .WithMany()
-                      .HasForeignKey("link_sub_content_id")
-                      .OnDelete(DeleteBehavior.Cascade),
+                    .WithMany()
+                    .HasForeignKey(DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent.LinkSubContentId)))
+                    .OnDelete(DeleteBehavior.Cascade),
                 e => e.HasOne<LinkFirstContent>()
-                      .WithMany()
-                      .HasForeignKey("link_first_content_id"),
-                e => e.HasKey("link_first_content_id", "link_sub_content_id")
+                    .WithMany()
+                    .HasForeignKey(DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent.LinkFirstContentId))),
+                e => e.HasKey(
+                    DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent.LinkFirstContentId)),
+                    DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent.LinkSubContentId)))
             );
     }
 }

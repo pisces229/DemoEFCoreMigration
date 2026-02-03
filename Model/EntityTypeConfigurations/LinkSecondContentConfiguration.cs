@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Model.Entities;
+using Model.RelEntities;
 
 namespace Model.EntityTypeConfigurations;
 
@@ -18,16 +19,18 @@ internal class LinkSecondContentConfiguration : IEntityTypeConfiguration<LinkSec
 
         builder.HasMany(p => p.LinkSecondSubContents)
             .WithMany()
-            .UsingEntity<Dictionary<string, string>>(
-                "rel_second_sub_content",
+            .UsingEntity<Dictionary<long, long>>(
+                DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent)),
                 e => e.HasOne<LinkSecondSubContent>()
-                      .WithMany()
-                      .HasForeignKey("link_sub_content_id")
-                      .OnDelete(DeleteBehavior.Cascade),
+                    .WithMany()
+                    .HasForeignKey(DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent.LinkSubContentId)))
+                    .OnDelete(DeleteBehavior.Cascade),
                 e => e.HasOne<LinkSecondContent>()
-                      .WithMany()
-                      .HasForeignKey("link_second_content_id"),
-                e => e.HasKey("link_second_content_id", "link_sub_content_id")
+                    .WithMany()
+                    .HasForeignKey(DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent.LinkSecondContentId))),
+                e => e.HasKey(
+                    DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent.LinkSecondContentId)),
+                    DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent.LinkSubContentId)))
             );
     }
 }
