@@ -10,34 +10,36 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
 
     #region Entities
-    public DbSet<AnimalCat> AnimalCat { get; set; }
-    public DbSet<AnimalDog> AnimalDog { get; set; }
-    public DbSet<AppTable> AppTable { get; set; }
-    public DbSet<AppIndex> AppIndex { get; set; }
-    public DbSet<HumanHead> HumanHead { get; set; }
-    public DbSet<HumanBody> HumanBody { get; set; }
-    public DbSet<HumanLimb> HumanLimb { get; set; }
-    public DbSet<LinkFirstContent> LinkFirstContent { get; set; }
-    public DbSet<LinkFirstSubContent> LinkFirstSubContent { get; set; }
-    public DbSet<LinkSecondContent> LinkSecondContent { get; set; }
-    public DbSet<LinkSecondSubContent> LinkSecondSubContent { get; set; }
-    public DbSet<SubjectFirst> SubjectFirst { get; set; }
-    public DbSet<SubjectSecond> SubjectSecond { get; set; }
-    public DbSet<SubjectContent> SubjectContent { get; set; }
-    public DbSet<SubjectFirstContent> SubjectFirstContent { get; set; }
-    public DbSet<SubjectSecondContent> SubjectSecondContent { get; set; }
-    public DbSet<VehicleBase> VehicleBase { get; set; }
-    public DbSet<VehicleSmallCar> VehicleSmallCar { get; set; }
-    public DbSet<VehicleLargeCar> VehicleLargeCar { get; set; }
+    public DbSet<AnimalCat> AnimalCat { get; set; } = default!;
+    public DbSet<AnimalDog> AnimalDog { get; set; } = default!;
+    public DbSet<AppTable> AppTable { get; set; } = default!;
+    public DbSet<AppIndex> AppIndex { get; set; } = default!;
+    public DbSet<ClosureNode> ClosureNode { get; set; } = default!;
+    public DbSet<ClosurePath> ClosurePath { get; set; } = default!;
+    public DbSet<HumanHead> HumanHead { get; set; } = default!;
+    public DbSet<HumanBody> HumanBody { get; set; } = default!;
+    public DbSet<HumanLimb> HumanLimb { get; set; } = default!;
+    public DbSet<LinkFirstContent> LinkFirstContent { get; set; } = default!;
+    public DbSet<LinkFirstSubContent> LinkFirstSubContent { get; set; } = default!;
+    public DbSet<LinkSecondContent> LinkSecondContent { get; set; } = default!;
+    public DbSet<LinkSecondSubContent> LinkSecondSubContent { get; set; } = default!;
+    public DbSet<SubjectFirst> SubjectFirst { get; set; } = default!;
+    public DbSet<SubjectSecond> SubjectSecond { get; set; } = default!;
+    public DbSet<SubjectContent> SubjectContent { get; set; } = default!;
+    public DbSet<SubjectFirstContent> SubjectFirstContent { get; set; } = default!;
+    public DbSet<SubjectSecondContent> SubjectSecondContent { get; set; } = default!;
+    public DbSet<VehicleBase> VehicleBase { get; set; } = default!;
+    public DbSet<VehicleSmallCar> VehicleSmallCar { get; set; } = default!;
+    public DbSet<VehicleLargeCar> VehicleLargeCar { get; set; } = default!;
     #endregion
 
     #region Queries
-    public virtual DbSet<KeyLessResult> KeyLessResult { get; set; }
-    public virtual DbSet<ViewResult> ViewResult { get; set; }
+    public virtual DbSet<KeyLessResult> KeyLessResult { get; set; } = default!;
+    public virtual DbSet<ViewResult> ViewResult { get; set; } = default!;
     #endregion
 
     #region DbFunction
-    public virtual DbSet<EmptyDbSet> EmptyDbSet { get; set; }
+    public virtual DbSet<EmptyDbSet> EmptyDbSet { get; set; } = default!;
     /// <summary>
     /// FuncTable
     /// </summary>

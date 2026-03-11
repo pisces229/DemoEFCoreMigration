@@ -10,7 +10,8 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
 {
     public void Configure(EntityTypeBuilder<AppTable> builder)
     {
-        builder.ToTable(t => {
+        builder.ToTable(t =>
+        {
             t.HasComment(nameof(AppTable));
             t.HasCheckConstraint(
                 DbContextUtil.CreateCheckConstraint(nameof(AppTable),

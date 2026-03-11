@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Model.Definitions;
 using Model.Entities;
-using System;
 
 namespace Model.EntityTypeConfigurations;
 

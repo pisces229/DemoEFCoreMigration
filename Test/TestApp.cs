@@ -74,7 +74,7 @@ public class TestApp : BaseTest
         //var query = _demoContext.DemoTable.Where(p => p.DataType == DataType.First)
         //    .Select(s => func(s));
 
-        var dic = new Dictionary<string, Func<AppTable, string>>()
+        var dic = new Dictionary<string, Func<AppTable, string?>>()
             {
                 { "A", (t) => t.String }
             };

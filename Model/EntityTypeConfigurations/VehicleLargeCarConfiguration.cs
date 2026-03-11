@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Model.Definitions;
 using Model.Entities;
 using Model.JsonObjects;
-using System;
 
 namespace Model.EntityTypeConfigurations;
 
