@@ -11,39 +11,48 @@ public class TestApp : BaseTest
     [TestMethod(DisplayName = "Count")]
     public async Task Count()
     {
-        var count = await _dbContext.AppTable.CountAsync();
+        var cancellationToken = default(CancellationToken);
+        var count = await _dbContext.AppTable.CountAsync(cancellationToken);
         Assert.AreEqual(0, count);
     }
 
     [TestMethod(DisplayName = "Create")]
     public async Task Create()
     {
+        var cancellationToken = default(CancellationToken);
         //var dateTimeNow = DateTime.Now;
         _dbContext.AppTable.Add(new AppTable()
         {
             String = Guid.NewGuid().ToString(),
-            Int = -1,
+            Int = 1,
             //DateTime = dateTimeNow,
             //DateTime = DateTime.UtcNow,
             //DateTimeOffset = DateTimeOffset.Now,
             //DateTimeOffset = DateTimeOffset.UtcNow,
             StringJsonObjects = ["A", "B", "C"],
-            ValueJsonObject = new ValueJsonObject(DateTime.UtcNow.AddDays(0), DateTime.UtcNow.AddDays(1)),
+            ValueJsonObject = new ValueJsonObject(DateTime.UtcNow.AddDays(-1), DateTime.UtcNow.AddDays(0)),
             ValueJsonObjects = [
-                new (DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(1)),
-                new (DateTime.UtcNow.AddDays(2), DateTime.UtcNow.AddDays(3))
+                new (DateTime.UtcNow.AddDays(-1), DateTime.UtcNow.AddDays(-2)),
+                new (DateTime.UtcNow.AddDays(-2), DateTime.UtcNow.AddDays(-3))
             ],
         });
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     [TestMethod(DisplayName = "Query")]
     public async Task Query()
     {
-        var dateTimeNow = DateTime.Now;
+        var cancellationToken = default(CancellationToken);
+        var dateTimeNow = DateTime.UtcNow;
         var datas = await _dbContext.AppTable
             //.Where(p => p.DateTime <= dateTimeNow)
-            .ToListAsync();
+            // jsonb gin index
+            //.Where(a => EF.Functions.JsonContains(a.StringJsonObjects, "[\"A\"]"))
+            // text array gin index
+            .Where(a => a.StringJsonObjects.Contains("A"))
+            // jsonb gin index
+            .Where(p => p.ValueJsonObject!.StartDate <= dateTimeNow)
+            .ToListAsync(cancellationToken);
         foreach (var data in datas)
         {
             Console.WriteLine(string.Join(", ", data.StringJsonObjects));
@@ -59,14 +68,16 @@ public class TestApp : BaseTest
     [TestMethod(DisplayName = "Query1")]
     public async Task Query1()
     {
+        var cancellationToken = default(CancellationToken);
         var query = _dbContext.AppTable.Where(p => p.Enum == DataType.First);
         Console.WriteLine(query.ToQueryString());
-        await query.ToListAsync();
+        await query.ToListAsync(cancellationToken);
     }
 
     [TestMethod(DisplayName = "Query2")]
     public async Task Query2()
     {
+        var cancellationToken = default(CancellationToken);
         //var query = _demoContext.DemoTable.Where(p => p.DataType == DataType.First)
         //    .Select(s => s.StringValue);
 
@@ -82,14 +93,15 @@ public class TestApp : BaseTest
             .Select(s => dic["A"](s));
 
         Console.WriteLine(query.ToQueryString());
-        var list = await query.ToListAsync();
+        var list = await query.ToListAsync(cancellationToken);
         Console.WriteLine(list);
     }
 
     [TestMethod(DisplayName = "Json")]
     public async Task Json()
     {
-        var appTables = await _dbContext.AppTable.ToListAsync();
+        var cancellationToken = default(CancellationToken);
+        var appTables = await _dbContext.AppTable.ToListAsync(cancellationToken);
         foreach (var appTable in appTables)
         {
             if (appTable.ValueJsonObject != null)

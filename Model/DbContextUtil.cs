@@ -33,7 +33,8 @@ internal class DbContextUtil
 
     public static readonly JsonSerializerOptions JsonOptions = new()
     {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        //PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
     };
 
     public static string NamingConvention(string name) => ToSnakeCase(name);

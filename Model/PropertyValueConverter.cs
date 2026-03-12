@@ -45,7 +45,7 @@ public class NullableDateTimeWithoutZoneConverter : ValueConverter<DateTime?, Da
 
 #region IEnumerable<string>
 
-public class StringCollectionConverter : ValueConverter<IEnumerable<string>?, string?>
+public class StringCollectionConverter : ValueConverter<List<string>?, string?>
 {
     public StringCollectionConverter() : base(
         v => v == null ? null : JsonSerializer.Serialize(v, DbContextUtil.JsonOptions),

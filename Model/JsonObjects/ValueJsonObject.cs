@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Model.JsonObjects;
 
-public record ValueJsonObject(DateTime StartDate, DateTime EndDate);
+public record ValueJsonObject(
+    [property: JsonPropertyName("start_date")] DateTime StartDate,
+    [property: JsonPropertyName("end_date")] DateTime EndDate
+);
 
 public class ValueJsonObjectConverter : ValueConverter<ValueJsonObject?, string>
 {
@@ -15,7 +19,7 @@ public class ValueJsonObjectConverter : ValueConverter<ValueJsonObject?, string>
     { }
 }
 
-public class ValueJsonObjectListConverter : ValueConverter<IEnumerable<ValueJsonObject>, string>
+public class ValueJsonObjectListConverter : ValueConverter<List<ValueJsonObject>, string>
 {
     public ValueJsonObjectListConverter() : base(
         v => JsonSerializer.Serialize(v, DbContextUtil.JsonOptions),
@@ -34,7 +38,7 @@ public class ValueJsonObjectComparer : ValueComparer<ValueJsonObject?>
     { }
 }
 
-public class ValueJsonObjectListComparer : ValueComparer<IEnumerable<ValueJsonObject>>
+public class ValueJsonObjectListComparer : ValueComparer<List<ValueJsonObject>>
 {
     public ValueJsonObjectListComparer() : base(
         (l, r) => l != null && r != null ? l.SequenceEqual(r) : l == r,

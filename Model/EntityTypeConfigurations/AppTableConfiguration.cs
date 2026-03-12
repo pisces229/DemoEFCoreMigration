@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Model.Definitions;
 using Model.Entities;
 using Model.JsonObjects;
+using System.Reflection.Emit;
 
 namespace Model.EntityTypeConfigurations;
 
@@ -47,18 +49,35 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         //builder.Property(e => e.DateTime).HasColumnType(DbColumnType.TimestampWithoutTimeZone);
         builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithTimeZone);
         //builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithoutTimeZone);
+
+        // type set to Jsonb
+        //builder.Property(e => e.StringJsonObjects)
+        //    .HasColumnType(DbColumnType.Jsonb)
+        //    .HasConversion<StringCollectionConverter>()
+        //    .Metadata.SetValueComparer(new StringCollectionComparer());
+        // type set to TextArray, can't use HasConversion and Metadata.SetValueComparer
         builder.Property(e => e.StringJsonObjects)
-            .HasColumnType(DbColumnType.Jsonb)
-            .HasConversion<StringCollectionConverter>()
-            .Metadata.SetValueComparer(new StringCollectionComparer());
+            .HasColumnType(DbColumnType.TextArray);
+
         builder.Property(e => e.ValueJsonObject)
             .HasColumnType(DbColumnType.Jsonb)
             .HasConversion<ValueJsonObjectConverter>()
             .Metadata.SetValueComparer(new ValueJsonObjectComparer());
+        // if use builder.OwnsOne, need to create index manually
+        //builder.OwnsOne(e => e.ValueJsonObject, e =>
+        //{
+        //    e.ToJson();
+        //});
+
         builder.Property(e => e.ValueJsonObjects)
             .HasColumnType(DbColumnType.Jsonb)
             .HasConversion<ValueJsonObjectListConverter>()
             .Metadata.SetValueComparer(new ValueJsonObjectListComparer());
+        // if use builder.OwnsMany, need to create index manually
+        //builder.OwnsMany(e => e.ValueJsonObjects, e =>
+        //{
+        //    e.ToJson();
+        //});
 
         // SqlServer Concurrency Token
         //builder.Property(e => e.RowVersion)
@@ -73,5 +92,24 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         builder.HasIndex(e => e.String)
             .IsUnique()
             .HasFilter($"{DbContextUtil.ToSnakeCase(nameof(AppTable.String))} IS NOT NULL");
+
+        // only for PostgreSQL gin index
+        builder
+            .HasIndex(e => e.StringJsonObjects)
+            .HasMethod("gin");
+        // if use builder.OwnsOne, need to create index manually
+        builder
+            .HasIndex(e => e.ValueJsonObject)
+            .HasMethod("gin");
+        // if use builder.OwnsMany, need to create index manually
+        builder
+            .HasIndex(e => e.ValueJsonObjects)
+            .HasMethod("gin");
+
+        // create index manually
+        // migrationBuilder.Sql("CREATE INDEX ix_apptable_stringjsonobjects ON app_table USING gin (string_json_objects);");
+        // migrationBuilder.Sql("CREATE INDEX ix_apptable_valuejsonobject ON app_table USING gin (value_json_object);");
+        // migrationBuilder.Sql("CREATE INDEX ix_apptable_valuejsonobjects ON app_table USING gin (value_json_objects);");
+
     }
 }

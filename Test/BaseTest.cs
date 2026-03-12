@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Model;
 
 namespace Test;
@@ -18,7 +19,7 @@ public class BaseTest
             .AddJsonFile("appSettings.json")
             .Build();
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        //dbContextOptionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+        dbContextOptionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
         dbContextOptionsBuilder.EnableSensitiveDataLogging();
         // (Lazy loading)
         //dbContextOptionsBuilder.UseLazyLoadingProxies();

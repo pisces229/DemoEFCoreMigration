@@ -8,7 +8,7 @@ namespace Model;
 
 #region IEnumerable<string>
 
-public class StringCollectionComparer : ValueComparer<IEnumerable<string>?>
+public class StringCollectionComparer : ValueComparer<List<string>?>
 {
     public StringCollectionComparer() : base(
         (c1, c2) => c1 == null && c2 == null ? true : c1 != null && c2 != null && c1.SequenceEqual(c2),
