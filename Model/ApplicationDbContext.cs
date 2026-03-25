@@ -4,39 +4,39 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
 
     #region Entities
-    public DbSet<AnimalCat> AnimalCat { get; set; } = default!;
-    public DbSet<AnimalDog> AnimalDog { get; set; } = default!;
-    public DbSet<AppTable> AppTable { get; set; } = default!;
-    public DbSet<AppIndex> AppIndex { get; set; } = default!;
-    public DbSet<ClosureNode> ClosureNode { get; set; } = default!;
-    public DbSet<ClosurePath> ClosurePath { get; set; } = default!;
-    public DbSet<FamilyParent> FamilyParent { get; set; } = default!;
-    public DbSet<FamilyChild1> FamilyChild1 { get; set; } = default!;
-    public DbSet<FamilyChild2> FamilyChild2 { get; set; } = default!;
-    public DbSet<HumanHead> HumanHead { get; set; } = default!;
-    public DbSet<HumanBody> HumanBody { get; set; } = default!;
-    public DbSet<HumanLimb> HumanLimb { get; set; } = default!;
-    public DbSet<LinkFirstContent> LinkFirstContent { get; set; } = default!;
-    public DbSet<LinkFirstSubContent> LinkFirstSubContent { get; set; } = default!;
-    public DbSet<LinkSecondContent> LinkSecondContent { get; set; } = default!;
-    public DbSet<LinkSecondSubContent> LinkSecondSubContent { get; set; } = default!;
-    public DbSet<SubjectFirst> SubjectFirst { get; set; } = default!;
-    public DbSet<SubjectSecond> SubjectSecond { get; set; } = default!;
-    public DbSet<SubjectContent> SubjectContent { get; set; } = default!;
-    public DbSet<SubjectFirstContent> SubjectFirstContent { get; set; } = default!;
-    public DbSet<SubjectSecondContent> SubjectSecondContent { get; set; } = default!;
-    public DbSet<VehicleBase> VehicleBase { get; set; } = default!;
-    public DbSet<VehicleSmallCar> VehicleSmallCar { get; set; } = default!;
-    public DbSet<VehicleLargeCar> VehicleLargeCar { get; set; } = default!;
+    public DbSet<AnimalCat> AnimalCat => Set<AnimalCat>();
+    public DbSet<AnimalDog> AnimalDog => Set<AnimalDog>();
+    public DbSet<AppTable> AppTable => Set<AppTable>();
+    public DbSet<AppIndex> AppIndex => Set<AppIndex>();
+    public DbSet<ClosureNode> ClosureNode => Set<ClosureNode>();
+    public DbSet<ClosurePath> ClosurePath => Set<ClosurePath>();
+    public DbSet<FamilyParent> FamilyParent => Set<FamilyParent>();
+    public DbSet<FamilyChild1> FamilyChild1 => Set<FamilyChild1>();
+    public DbSet<FamilyChild2> FamilyChild2 => Set<FamilyChild2>();
+    public DbSet<HumanHead> HumanHead => Set<HumanHead>();
+    public DbSet<HumanBody> HumanBody => Set<HumanBody>();
+    public DbSet<HumanLimb> HumanLimb => Set<HumanLimb>();
+    public DbSet<LinkFirstContent> LinkFirstContent => Set<LinkFirstContent>();
+    public DbSet<LinkFirstSubContent> LinkFirstSubContent => Set<LinkFirstSubContent>();
+    public DbSet<LinkSecondContent> LinkSecondContent => Set<LinkSecondContent>();
+    public DbSet<LinkSecondSubContent> LinkSecondSubContent => Set<LinkSecondSubContent>();
+    public DbSet<SubjectFirst> SubjectFirst => Set<SubjectFirst>();
+    public DbSet<SubjectSecond> SubjectSecond => Set<SubjectSecond>();
+    public DbSet<SubjectContent> SubjectContent => Set<SubjectContent>();
+    public DbSet<SubjectFirstContent> SubjectFirstContent => Set<SubjectFirstContent>();
+    public DbSet<SubjectSecondContent> SubjectSecondContent => Set<SubjectSecondContent>();
+    public DbSet<VehicleBase> VehicleBase => Set<VehicleBase>();
+    public DbSet<VehicleSmallCar> VehicleSmallCar => Set<VehicleSmallCar>();
+    public DbSet<VehicleLargeCar> VehicleLargeCar => Set<VehicleLargeCar>();
     #endregion
 
     #region Queries
-    public virtual DbSet<KeyLessResult> KeyLessResult { get; set; } = default!;
-    public virtual DbSet<ViewResult> ViewResult { get; set; } = default!;
+    public virtual DbSet<KeyLessResult> KeyLessResult => Set<KeyLessResult>();
+    public virtual DbSet<ViewResult> ViewResult => Set<ViewResult>();
     #endregion
 
     #region DbFunction
-    public virtual DbSet<EmptyDbSet> EmptyDbSet { get; set; } = default!;
+    public virtual DbSet<EmptyDbSet> EmptyDbSet => Set<EmptyDbSet>();
     /// <summary>
     /// FuncTable
     /// </summary>
@@ -56,6 +56,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public int FuncScalarWithParam(long id) => throw new NotSupportedException();
     #endregion
 
+    /// <summary>
+    /// 設定特定實體的配置。
+    /// 這裡的設定擁有最高優先權 (High Precedence)，會覆蓋 ConfigureConventions 的預設慣例。
+    /// </summary>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -104,6 +108,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.RegisterFunctions();
     }
 
+    /// <summary>
+    /// 設定全域模型慣例。
+    /// 注意：此處的設定為「預設值」，若在 OnModelCreating 中有特定配置，則以 OnModelCreating 為準 (Precedence)。
+    /// </summary>
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         configurationBuilder.Properties<DateTime>()
@@ -112,6 +120,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         configurationBuilder.Properties<DateTime?>()
             .HaveColumnType(DbColumnType.TimestampWithTimeZone)
             .HaveConversion<NullableDateTimeWithZoneConverter>();
+
+        configurationBuilder.Properties<string>()
+            .HaveColumnType(DbColumnType.Text);
+        configurationBuilder.Properties<string?>()
+            .HaveColumnType(DbColumnType.Text);
     }
 
 }

@@ -13,6 +13,7 @@ public partial class AppTable
     public DateOnly? DateOnly { get; set; }
     public DateTime? DateTime { get; set; }
     public DateTimeOffset? DateTimeOffset { get; set; }
+    public string? AnyJsonString { get; set; }
     public List<string> StringJsonObjects { get; set; } = [];
     public ValueJsonObject? ValueJsonObject { get; set; }
     public List<ValueJsonObject> ValueJsonObjects { get; set; } = [];

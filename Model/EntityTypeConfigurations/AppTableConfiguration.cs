@@ -44,6 +44,9 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithTimeZone);
         //builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithoutTimeZone);
 
+        builder.Property(e => e.AnyJsonString)
+            .HasColumnType(DbColumnType.Jsonb);
+
         // type set to Jsonb
         //builder.Property(e => e.StringJsonObjects)
         //    .HasColumnType(DbColumnType.Jsonb)

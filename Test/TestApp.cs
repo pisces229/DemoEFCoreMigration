@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Model.Definitions;
 using Model.Entities;
 using Model.JsonObjects;
+using System.Text.Json;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace Test;
 
@@ -29,6 +31,7 @@ public class TestApp : BaseTest
             //DateTime = DateTime.UtcNow,
             //DateTimeOffset = DateTimeOffset.Now,
             //DateTimeOffset = DateTimeOffset.UtcNow,
+            AnyJsonString = JsonSerializer.Serialize(new { Name = "Name" }),
             StringJsonObjects = ["A", "B", "C"],
             ValueJsonObject = new ValueJsonObject(DateTime.UtcNow.AddDays(-1), DateTime.UtcNow.AddDays(0)),
             ValueJsonObjects = [
