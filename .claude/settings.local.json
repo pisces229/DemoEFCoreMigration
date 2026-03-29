@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Users/pisce/Documents/Github/DemoEFCoreMigration/Model/Migrations -type f -name *.cs)",
+      "Bash(xargs grep:*)",
+      "Bash(dotnet build:*)",
+      "Bash(find:*)"
+    ]
+  }
+}

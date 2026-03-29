@@ -173,6 +173,18 @@ SELECT
 * 對應 C# 類型: DateTimeOffset 或 DateTime (Utc)
 * 適用場景: 新專案首選、跨國系統、精確事件記錄
 
+## Key
+
+```bash
+
+# 生成 UUID v4
+SELECT gen_random_uuid();
+
+# 生成 UUID v7 (PostgreSQL 15+)
+SELECT uuidv7();
+
+```
+
 ## 安裝 plpgsql_check 靜態程式碼分析
 
 ### 在 Ubuntu / Debian 安裝
