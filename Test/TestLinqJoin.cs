@@ -10,7 +10,7 @@ public class TestLinqJoin : BaseTest
     {
         var query = _dbContext.HumanHead;
         var r = await query.Join(_dbContext.HumanBody,
-            t1 => t1.Ulid,
+            t1 => (Guid?)t1.Id,
             t2 => t2.HeadId,
             (t1, t2) => new { t1, t2 })
             .Select(s => new

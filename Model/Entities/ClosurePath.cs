@@ -2,8 +2,8 @@ namespace Model.Entities;
 
 public partial class ClosurePath
 {
-    public long AncestorId { get; set; }
-    public long DescendantId { get; set; }
+    public Guid AncestorId { get; set; }
+    public Guid DescendantId { get; set; }
     public int Depth { get; set; }
 
     public virtual ClosureNode Ancestor { get; set; } = null!;

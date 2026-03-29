@@ -7,6 +7,7 @@ public class AnimalDogConfiguration : IEntityTypeConfiguration<AnimalDog>
         builder.ToTable(t => t.HasComment("AnimalDog"));
 
         builder.HasKey(a => a.Id);
+        builder.Property(a => a.Id).ValueGeneratedNever();
 
         builder.Property(a => a.Name)
             .IsRequired()

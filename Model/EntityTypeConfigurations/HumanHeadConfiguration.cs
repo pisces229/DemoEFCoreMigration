@@ -7,6 +7,7 @@ public class HumanHeadConfiguration : IEntityTypeConfiguration<HumanHead>
         builder.ToTable(t => t.HasComment("HumanHead"));
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.Ulid)
             .HasMaxLength(10)
@@ -27,7 +28,6 @@ public class HumanHeadConfiguration : IEntityTypeConfiguration<HumanHead>
 
         builder.HasOne(e => e.HumanBody)
             .WithOne(e => e.HumanHead)
-            .HasPrincipalKey<HumanHead>(e => e.Ulid)
             .HasForeignKey<HumanBody>(e => e.HeadId)
             .OnDelete(DeleteBehavior.Restrict);
     }

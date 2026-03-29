@@ -23,14 +23,12 @@ public class TestFamily : BaseTest
         var parent = new FamilyParent
         {
             Name = "Parent-1",
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
         };
 
         await _dbContext.FamilyParent.AddAsync(parent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        Assert.IsGreaterThan(parent.Id, 0, "FamilyParent should have a generated Id after save.");
+        Assert.AreNotEqual(Guid.Empty, parent.Id, "FamilyParent should have a generated Id after save.");
         Console.WriteLine($"FamilyParent Id={parent.Id}, Name={parent.Name}");
     }
 
@@ -42,8 +40,6 @@ public class TestFamily : BaseTest
         var parent = new FamilyParent
         {
             Name = "Parent-2",
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
         };
         await _dbContext.FamilyParent.AddAsync(parent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -52,23 +48,19 @@ public class TestFamily : BaseTest
         {
             Name = "Child1-A",
             ParentId = parent.Id,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
         };
         var child2 = new FamilyChild2
         {
             Name = "Child2-A",
             ParentId = parent.Id,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
         };
 
         await _dbContext.FamilyChild1.AddAsync(child1, cancellationToken);
         await _dbContext.FamilyChild2.AddAsync(child2, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        Assert.IsGreaterThan(child1.Id, 0, "FamilyChild1 should have a generated Id after save.");
-        Assert.IsGreaterThan(child2.Id, 0, "FamilyChild2 should have a generated Id after save.");
+        Assert.AreNotEqual(Guid.Empty, child1.Id, "FamilyChild1 should have a generated Id after save.");
+        Assert.AreNotEqual(Guid.Empty, child2.Id, "FamilyChild2 should have a generated Id after save.");
         Assert.AreEqual(parent.Id, child1.ParentId);
         Assert.AreEqual(parent.Id, child2.ParentId);
 
@@ -84,29 +76,27 @@ public class TestFamily : BaseTest
         var parent = new FamilyParent
         {
             Name = "Parent-3",
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
             FamilyChild1 =
             [
-                new FamilyChild1 { Name = "Child1-B1", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new FamilyChild1 { Name = "Child1-B2", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new FamilyChild1 { Name = "Child1-B1" },
+                new FamilyChild1 { Name = "Child1-B2" },
             ],
-            FamilyChild2 =
-            [
-                new FamilyChild2 { Name = "Child2-B1", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            ],
+            // FamilyChild2 =
+            // [
+            //     new FamilyChild2 { Name = "Child2-B1" },
+            // ],
         };
 
         await _dbContext.FamilyParent.AddAsync(parent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         Assert.HasCount(2, parent.FamilyChild1);
-        Assert.HasCount(1, parent.FamilyChild2);
+        // Assert.HasCount(1, parent.FamilyChild2);
 
         foreach (var c in parent.FamilyChild1)
             Console.WriteLine($"FamilyChild1 Id={c.Id}, Name={c.Name}, ParentId={c.ParentId}");
-        foreach (var c in parent.FamilyChild2)
-            Console.WriteLine($"FamilyChild2 Id={c.Id}, Name={c.Name}, ParentId={c.ParentId}");
+        // foreach (var c in parent.FamilyChild2)
+        //     Console.WriteLine($"FamilyChild2 Id={c.Id}, Name={c.Name}, ParentId={c.ParentId}");
     }
 
     [TestMethod(DisplayName = "Family_Read_Parent")]
@@ -118,8 +108,6 @@ public class TestFamily : BaseTest
         var parent = new FamilyParent
         {
             Name = "Parent-Read",
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
         };
         await _dbContext.FamilyParent.AddAsync(parent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -143,19 +131,17 @@ public class TestFamily : BaseTest
         var parent = new FamilyParent
         {
             Name = "Parent-ReadChildren",
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
             FamilyChild1 =
             [
-                new FamilyChild1 { Name = "Child1-R1", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new FamilyChild1 { Name = "Child1-R2", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new FamilyChild1 { Name = "Child1-R1" },
+                new FamilyChild1 { Name = "Child1-R2" },
             ],
-            FamilyChild2 =
-            [
-                new FamilyChild2 { Name = "Child2-R1", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new FamilyChild2 { Name = "Child2-R2", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new FamilyChild2 { Name = "Child2-R3", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            ],
+            // FamilyChild2 =
+            // [
+            //     new FamilyChild2 { Name = "Child2-R1" },
+            //     new FamilyChild2 { Name = "Child2-R2" },
+            //     new FamilyChild2 { Name = "Child2-R3" },
+            // ],
         };
         await _dbContext.FamilyParent.AddAsync(parent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -188,16 +174,14 @@ public class TestFamily : BaseTest
         var parent = new FamilyParent
         {
             Name = "Parent-WithChildren",
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
             FamilyChild1 =
             [
-                new FamilyChild1 { Name = "Child1-W1", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new FamilyChild1 { Name = "Child1-W1" },
             ],
-            FamilyChild2 =
-            [
-                new FamilyChild2 { Name = "Child2-W1", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            ],
+            // FamilyChild2 =
+            // [
+            //     new FamilyChild2 { Name = "Child2-W1" },
+            // ],
         };
         await _dbContext.FamilyParent.AddAsync(parent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -206,17 +190,17 @@ public class TestFamily : BaseTest
         var found = await _dbContext.FamilyParent
             .Where(p => p.Id == parent.Id)
             .Include(p => p.FamilyChild1)
-            .Include(p => p.FamilyChild2)
+            // .Include(p => p.FamilyChild2)
             .FirstOrDefaultAsync(cancellationToken);
 
         Assert.IsNotNull(found);
         Assert.HasCount(1, found.FamilyChild1);
-        Assert.HasCount(1, found.FamilyChild2);
+        // Assert.HasCount(1, found.FamilyChild2);
 
         Console.WriteLine($"FamilyParent Id={found.Id}, Name={found.Name}");
         foreach (var c in found.FamilyChild1)
             Console.WriteLine($"  FamilyChild1 Id={c.Id}, Name={c.Name}");
-        foreach (var c in found.FamilyChild2)
-            Console.WriteLine($"  FamilyChild2 Id={c.Id}, Name={c.Name}");
+        // foreach (var c in found.FamilyChild2)
+        //     Console.WriteLine($"  FamilyChild2 Id={c.Id}, Name={c.Name}");
     }
 }

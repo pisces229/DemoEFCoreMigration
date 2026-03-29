@@ -93,6 +93,7 @@ public class TestApp : BaseTest
                 { "A", (t) => t.String }
             };
         var query = _dbContext.AppTable.Where(p => p.Enum == DataType.First)
+            //.Where(e => e.Id == Guid.Empty)
             .Select(s => dic["A"](s));
 
         Console.WriteLine(query.ToQueryString());

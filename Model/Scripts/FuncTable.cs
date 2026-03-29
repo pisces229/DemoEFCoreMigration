@@ -11,7 +11,7 @@ DROP FUNCTION IF EXISTS {Name}();
 
 CREATE OR REPLACE FUNCTION {Name}()
 RETURNS TABLE (
-    id BIGINT,
+    id UUID,
     name VARCHAR(100)
 ) 
 LANGUAGE plpgsql

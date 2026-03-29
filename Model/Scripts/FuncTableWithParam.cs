@@ -7,11 +7,11 @@ public class FuncTableWithParam
     //public static readonly string Skip = "-- Skip";
 
     public static readonly string Create = @$"
-DROP FUNCTION IF EXISTS {Name}(BIGINT);
+DROP FUNCTION IF EXISTS {Name}(UUID);
 
-CREATE OR REPLACE FUNCTION {Name}(value BIGINT)
+CREATE OR REPLACE FUNCTION {Name}(value UUID)
 RETURNS TABLE (
-    id BIGINT,
+    id UUID,
     name VARCHAR(100)
 ) 
 LANGUAGE plpgsql

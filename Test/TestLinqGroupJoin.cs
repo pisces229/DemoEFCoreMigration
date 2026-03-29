@@ -10,7 +10,7 @@ public class TestLinqGroupJoin : BaseTest
     {
         var query = _dbContext.HumanBody;
         var r = await query.GroupJoin(_dbContext.HumanLimb,
-            t1 => t1.Ulid,
+            t1 => (Guid?)t1.Id,
             t2 => t2.BodyId,
             (t1, t2Group) => new { t1, t2Group = t2Group.FirstOrDefault() })
             .Select(s => new
@@ -27,7 +27,7 @@ public class TestLinqGroupJoin : BaseTest
     {
         var query = _dbContext.HumanBody;
         var r = await query.GroupJoin(_dbContext.HumanLimb,
-            t1 => t1.Ulid,
+            t1 => (Guid?)t1.Id,
             t2 => t2.BodyId,
             (t1, t2Group) => new { t1, t2Group })
             .SelectMany(s => s.t2Group.DefaultIfEmpty(),

@@ -9,6 +9,7 @@ internal class LinkSecondContentConfiguration : IEntityTypeConfiguration<LinkSec
         builder.ToTable(e => e.HasComment("LinkSecondContent"));
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.Name)
             .IsRequired()
@@ -16,7 +17,7 @@ internal class LinkSecondContentConfiguration : IEntityTypeConfiguration<LinkSec
 
         builder.HasMany(p => p.LinkSecondSubContents)
             .WithMany()
-            .UsingEntity<Dictionary<long, long>>(
+            .UsingEntity<Dictionary<string, object>>(
                 DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent)),
                 e => e.HasOne<LinkSecondSubContent>()
                     .WithMany()

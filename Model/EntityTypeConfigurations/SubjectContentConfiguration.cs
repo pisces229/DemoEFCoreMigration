@@ -10,6 +10,7 @@ public class SubjectContentConfiguration : IEntityTypeConfiguration<SubjectConte
         });
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.HasDiscriminator(e => e.ReferenceType)
             .HasValue<SubjectFirstContent>(SubjectContentReferenceType.First)

@@ -4,7 +4,7 @@ namespace Model.Entities;
 
 public partial class AppTable
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; } = Guid.CreateVersion7();
     public DataType? Enum { get; set; }
     public string? String { get; set; } = null!;
     public int? Int { get; set; }

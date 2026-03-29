@@ -2,12 +2,12 @@ namespace Model.Entities;
 
 public partial class HumanLimb
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; } = Guid.CreateVersion7();
     public string? Ulid { get; set; }
     public int Weight { get; set; }
     public Color Color { get; set; }
     public DateTime CheckDate { get; set; }
     public string? Remark { get; set; }
-    public string? BodyId { get; set; }
+    public Guid? BodyId { get; set; }
     public virtual HumanBody HumanBody { get; set; } = null!;
 }

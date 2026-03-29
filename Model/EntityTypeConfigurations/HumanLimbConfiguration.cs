@@ -7,6 +7,7 @@ public class HumanLimbConfiguration : IEntityTypeConfiguration<HumanLimb>
         builder.ToTable(t => t.HasComment("HumanLimb"));
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.Ulid)
             .HasMaxLength(10)

@@ -7,6 +7,7 @@ public class SubjectSecondConfiguration : IEntityTypeConfiguration<SubjectSecond
         builder.ToTable(t => t.HasComment("SubjectSecond"));
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.Name).HasMaxLength(50).IsRequired();
     }

@@ -18,6 +18,7 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         });
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
         builder.HasAlternateKey(e => e.String);
 
         // [Enum]

@@ -58,7 +58,7 @@ public class TestDbFunc : BaseTest
         await _dbContext.AnimalCat.Select(s => new
         {
             Id = s.Id,
-            Value = _dbContext.FuncScalarWithParam(s.Id)
+            Value = _dbContext.FuncScalarWithParam(10)
         })
         .ToListAsync();
     }
@@ -91,7 +91,7 @@ public class TestDbFunc : BaseTest
     [TestMethod(DisplayName = "FuncTableWithParam")]
     public async Task FuncTableWithParam()
     {
-        await _dbContext.FuncTableWithParam(10).ToListAsync();
+        await _dbContext.FuncTableWithParam(Guid.CreateVersion7()).ToListAsync();
     }
 
     [TestMethod(DisplayName = "FuncTableWithParamSelectMany")]

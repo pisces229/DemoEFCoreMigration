@@ -7,6 +7,7 @@ public class FamilyChild2Configuration : IEntityTypeConfiguration<FamilyChild2>
         builder.ToTable(t => t.HasComment("FamilyChild2"));
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.ConfigureFamilyChildEntite();
         builder.ConfigureCreateEntite();

@@ -32,21 +32,20 @@ public class TestDeleteBehavior
     [TestMethod(DisplayName = "Cascade")]
     public async Task Cascade()
     {
-        var id = "1";
         var humanBody = new HumanBody()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
         };
         var humanLimb = new HumanLimb()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
-            BodyId = id,
+            BodyId = humanBody.Id,
         };
 
         await _demoContext.HumanBody.AddAsync(humanBody);
@@ -63,21 +62,20 @@ public class TestDeleteBehavior
     [TestMethod(DisplayName = "ClientCascade")]
     public async Task ClientCascade()
     {
-        var id = "1";
         var humanBody = new HumanBody()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
         };
         var humanLimb = new HumanLimb()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
-            BodyId = id,
+            BodyId = humanBody.Id,
         };
 
         await _demoContext.HumanBody.AddAsync(humanBody);
@@ -94,21 +92,20 @@ public class TestDeleteBehavior
     [TestMethod(DisplayName = "Restrict")]
     public async Task Restrict()
     {
-        var id = "1";
         var humanBody = new HumanBody()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
         };
         var humanLimb = new HumanLimb()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
-            BodyId = id,
+            BodyId = humanBody.Id,
         };
 
         await _demoContext.HumanLimb.AddAsync(humanLimb);
@@ -126,21 +123,20 @@ public class TestDeleteBehavior
     [TestMethod(DisplayName = "SetNull")]
     public async Task SetNull()
     {
-        var id = "1";
         var humanBody = new HumanBody()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
         };
         var humanLimb = new HumanLimb()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
-            BodyId = id,
+            BodyId = humanBody.Id,
         };
 
         await _demoContext.HumanBody.AddAsync(humanBody);
@@ -158,21 +154,20 @@ public class TestDeleteBehavior
     [TestMethod(DisplayName = "ClientSetNull")]
     public async Task ClientSetNull()
     {
-        var id = "1";
         var humanBody = new HumanBody()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
         };
         var humanLimb = new HumanLimb()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
-            BodyId = id,
+            BodyId = humanBody.Id,
         };
 
         await _demoContext.HumanBody.AddAsync(humanBody);
@@ -190,21 +185,20 @@ public class TestDeleteBehavior
     [TestMethod(DisplayName = "NoAction")]
     public async Task NoAction()
     {
-        var id = "1";
         var humanBody = new HumanBody()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
         };
         var humanLimb = new HumanLimb()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
-            BodyId = id,
+            BodyId = humanBody.Id,
         };
 
         await _demoContext.HumanBody.AddAsync(humanBody);
@@ -222,21 +216,20 @@ public class TestDeleteBehavior
     [TestMethod(DisplayName = "ClientNoAction")]
     public async Task ClientNoAction()
     {
-        var id = "1";
         var humanBody = new HumanBody()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
         };
         var humanLimb = new HumanLimb()
         {
-            Ulid = id,
+            Ulid = "1",
             Weight = 0,
             Color = Color.Red,
             CheckDate = DateTime.Now,
-            BodyId = id,
+            BodyId = humanBody.Id,
         };
 
         await _demoContext.HumanBody.AddAsync(humanBody);

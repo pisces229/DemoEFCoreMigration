@@ -7,6 +7,7 @@ internal class AnimalCatConfiguration : IEntityTypeConfiguration<AnimalCat>
         builder.ToTable(t => t.HasComment("AnimalCat"));
 
         builder.HasKey(a => a.Id);
+        builder.Property(a => a.Id).ValueGeneratedNever();
 
         builder.Property(a => a.Name)
             .IsRequired()

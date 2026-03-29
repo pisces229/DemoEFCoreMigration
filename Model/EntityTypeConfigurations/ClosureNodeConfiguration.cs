@@ -7,6 +7,7 @@ public class ClosureNodeConfiguration : IEntityTypeConfiguration<ClosureNode>
         builder.ToTable(t => t.HasComment("ClosureNode"));
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.Name)
             .IsRequired()

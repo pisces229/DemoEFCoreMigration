@@ -9,6 +9,7 @@ internal class LinkFirstContentConfiguration : IEntityTypeConfiguration<LinkFirs
         builder.ToTable(t => t.HasComment("LinkFirstContent"));
 
         builder.HasKey(a => a.Id);
+        builder.Property(a => a.Id).ValueGeneratedNever();
 
         builder.Property(a => a.Name)
             .IsRequired()
@@ -16,7 +17,7 @@ internal class LinkFirstContentConfiguration : IEntityTypeConfiguration<LinkFirs
 
         builder.HasMany(p => p.LinkFirstSubContents)
             .WithMany()
-            .UsingEntity<Dictionary<long, long>>(
+            .UsingEntity<Dictionary<string, object>>(
                 DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent)),
                 e => e.HasOne<LinkFirstSubContent>()
                     .WithMany()

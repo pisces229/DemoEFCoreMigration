@@ -7,6 +7,7 @@ public class AppIndexConfiguration : IEntityTypeConfiguration<AppIndex>
         builder.ToTable(t => t.HasComment("AppIndex"));
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.C1)
             .IsUnicode(true)

@@ -12,7 +12,7 @@ public static class ModelBuilderExtensions
             .HasSchema(DbContextUtil.Schema);
 
         modelBuilder.HasDbFunction(typeof(ApplicationDbContext)
-            .GetMethod(nameof(ApplicationDbContext.FuncTableWithParam), [typeof(int)])!)
+            .GetMethod(nameof(ApplicationDbContext.FuncTableWithParam), [typeof(Guid)])!)
             .HasName(FuncTableWithParam.Name)
             .HasSchema(DbContextUtil.Schema);
 
@@ -22,7 +22,7 @@ public static class ModelBuilderExtensions
             .HasSchema(DbContextUtil.Schema);
 
         modelBuilder.HasDbFunction(typeof(ApplicationDbContext)
-            .GetMethod(nameof(ApplicationDbContext.FuncScalarWithParam), [typeof(int)])!)
+            .GetMethod(nameof(ApplicationDbContext.FuncScalarWithParam), [typeof(long)])!)
             .HasName(FuncScalarWithParam.Name)
             .HasSchema(DbContextUtil.Schema);
     }

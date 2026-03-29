@@ -45,7 +45,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     /// FuncTableWithParam
     /// </summary>
     public IQueryable<FuncTableWithParamResult> FuncTableWithParam(FuncTableWithParamInput input) => FuncTableWithParam(input.Id);
-    public IQueryable<FuncTableWithParamResult> FuncTableWithParam(long id) => FromExpression(() => FuncTableWithParam(id));
+    public IQueryable<FuncTableWithParamResult> FuncTableWithParam(Guid id) => FromExpression(() => FuncTableWithParam(id));
     /// <summary>
     /// FuncScalar
     /// </summary>

@@ -7,6 +7,7 @@ internal class LinkSubContentConfiguration : IEntityTypeConfiguration<LinkSubCon
         builder.ToTable(e => e.HasComment("LinkSubContent"));
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.HasDiscriminator(e => e.LinkType)
             .HasValue<LinkFirstSubContent>(LinkSubContentLinkType.First)

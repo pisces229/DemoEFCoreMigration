@@ -17,7 +17,7 @@ public class TestSyntax : BaseTest
     public async Task QuerySyntaxJoin()
     {
         await (from body in _dbContext.HumanBody
-               join limb in _dbContext.HumanLimb on body.Ulid equals limb.BodyId
+               join limb in _dbContext.HumanLimb on (Guid?)body.Id equals limb.BodyId
                orderby body.Id
                select new
                {

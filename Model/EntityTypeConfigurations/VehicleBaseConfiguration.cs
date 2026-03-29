@@ -13,6 +13,7 @@ public class VehicleBaseConfiguration : IEntityTypeConfiguration<VehicleBase>
         });
 
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.HasDiscriminator(e => e.Type)
             .HasValue<VehicleSmallCar>(VehicleType.SmallCar)
