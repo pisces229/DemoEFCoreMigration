@@ -149,7 +149,7 @@ internal class DbContextUtil
 
     public static string DropConstraintName(string table, string name)
     {
-        var result = $"d_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+        var result = $"d_{ToSnakeCase(table)}_{ToHashName(ToSnakeCase(name))}";
         ValidateNameMaxLength(result);
         return result;
     }
