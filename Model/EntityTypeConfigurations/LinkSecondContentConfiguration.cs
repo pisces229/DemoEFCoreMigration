@@ -18,17 +18,17 @@ internal class LinkSecondContentConfiguration : IEntityTypeConfiguration<LinkSec
         builder.HasMany(p => p.LinkSecondSubContents)
             .WithMany()
             .UsingEntity<Dictionary<string, object>>(
-                DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent)),
+                DbContextUtil.NamingConvention(nameof(RelLinkSecondSubContent)),
                 e => e.HasOne<LinkSecondSubContent>()
                     .WithMany()
-                    .HasForeignKey(DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent.LinkSubContentId)))
+                    .HasForeignKey(DbContextUtil.NamingConvention(nameof(RelLinkSecondSubContent.LinkSubContentId)))
                     .OnDelete(DeleteBehavior.Cascade),
                 e => e.HasOne<LinkSecondContent>()
                     .WithMany()
-                    .HasForeignKey(DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent.LinkSecondContentId))),
+                    .HasForeignKey(DbContextUtil.NamingConvention(nameof(RelLinkSecondSubContent.LinkSecondContentId))),
                 e => e.HasKey(
-                    DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent.LinkSecondContentId)),
-                    DbContextUtil.ToSnakeCase(nameof(RelLinkSecondSubContent.LinkSubContentId)))
+                    DbContextUtil.NamingConvention(nameof(RelLinkSecondSubContent.LinkSecondContentId)),
+                    DbContextUtil.NamingConvention(nameof(RelLinkSecondSubContent.LinkSubContentId)))
             );
     }
 }

@@ -11,8 +11,8 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
             t.HasComment(nameof(AppTable));
             t.HasCheckConstraint(
                 DbContextUtil.CreateCheckConstraint(nameof(AppTable),
-                $"{DbContextUtil.ToSnakeCase(nameof(AppTable.Int))} > 0"),
-                $"{DbContextUtil.ToSnakeCase(nameof(AppTable.Int))} > 0"
+                $"{DbContextUtil.NamingConvention(nameof(AppTable.Int))} > 0"),
+                $"{DbContextUtil.NamingConvention(nameof(AppTable.Int))} > 0"
             );
             //t.HasTrigger("");
         });
@@ -40,10 +40,8 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
         builder.Property(e => e.Long);
         builder.Property(e => e.Decimal).HasPrecision(5, 3).HasConversion<decimal>();
         builder.Property(e => e.DateOnly);
-        builder.Property(e => e.DateTime).HasColumnType(DbColumnType.TimestampWithTimeZone);
-        //builder.Property(e => e.DateTime).HasColumnType(DbColumnType.TimestampWithoutTimeZone);
-        builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithTimeZone);
-        //builder.Property(e => e.DateTimeOffset).HasColumnType(DbColumnType.TimestampWithoutTimeZone);
+        builder.Property(e => e.DateTime);
+        builder.Property(e => e.DateTimeOffset);
 
         builder.Property(e => e.AnyJsonString)
             .HasColumnType(DbColumnType.Jsonb);
@@ -89,20 +87,20 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
 
         builder.HasIndex(e => e.String)
             .IsUnique()
-            .HasFilter($"{DbContextUtil.ToSnakeCase(nameof(AppTable.String))} IS NOT NULL");
+            .HasFilter($"{DbContextUtil.NamingConvention(nameof(AppTable.String))} IS NOT NULL");
 
         // only for PostgreSQL gin index
         builder
             .HasIndex(e => e.StringJsonObjects)
-            .HasMethod("gin");
+            .HasMethod(DbConstant.MethGin);
         // if use builder.OwnsOne, need to create index manually
         builder
             .HasIndex(e => e.ValueJsonObject)
-            .HasMethod("gin");
+            .HasMethod(DbConstant.MethGin);
         // if use builder.OwnsMany, need to create index manually
         builder
             .HasIndex(e => e.ValueJsonObjects)
-            .HasMethod("gin");
+            .HasMethod(DbConstant.MethGin);
 
         // create index manually
         // migrationBuilder.Sql("CREATE INDEX ix_apptable_stringjsonobjects ON app_table USING gin (string_json_objects);");

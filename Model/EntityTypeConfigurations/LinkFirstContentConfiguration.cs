@@ -18,17 +18,17 @@ internal class LinkFirstContentConfiguration : IEntityTypeConfiguration<LinkFirs
         builder.HasMany(p => p.LinkFirstSubContents)
             .WithMany()
             .UsingEntity<Dictionary<string, object>>(
-                DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent)),
+                DbContextUtil.NamingConvention(nameof(RelLinkFirstSubContent)),
                 e => e.HasOne<LinkFirstSubContent>()
                     .WithMany()
-                    .HasForeignKey(DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent.LinkSubContentId)))
+                    .HasForeignKey(DbContextUtil.NamingConvention(nameof(RelLinkFirstSubContent.LinkSubContentId)))
                     .OnDelete(DeleteBehavior.Cascade),
                 e => e.HasOne<LinkFirstContent>()
                     .WithMany()
-                    .HasForeignKey(DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent.LinkFirstContentId))),
+                    .HasForeignKey(DbContextUtil.NamingConvention(nameof(RelLinkFirstSubContent.LinkFirstContentId))),
                 e => e.HasKey(
-                    DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent.LinkFirstContentId)),
-                    DbContextUtil.ToSnakeCase(nameof(RelLinkFirstSubContent.LinkSubContentId)))
+                    DbContextUtil.NamingConvention(nameof(RelLinkFirstSubContent.LinkFirstContentId)),
+                    DbContextUtil.NamingConvention(nameof(RelLinkFirstSubContent.LinkSubContentId)))
             );
     }
 }

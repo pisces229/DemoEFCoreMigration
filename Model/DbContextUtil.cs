@@ -36,9 +36,7 @@ internal class DbContextUtil
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
     };
 
-    public static string NamingConvention(string name) => ToSnakeCase(name);
-
-    public static string ToSnakeCase(string name) =>
+    public static string NamingConvention(string name) =>
         string.Concat(name.Select((c, i) => i > 0 && char.IsUpper(c) ? "_" + c : c.ToString())).ToLower();
 
     public static void HashKeyName(IMutableKey mutableKey)
@@ -115,41 +113,41 @@ internal class DbContextUtil
 
     public static string CreateCheckConstraint(string table, string name)
     {
-        var result = $"c_{ToSnakeCase(table)}_{ToHashName(name)}";
+        var result = $"c_{NamingConvention(table)}_{ToHashName(name)}";
         ValidateNameMaxLength(result);
         return result;
     }
 
     public static string CreatePrimaryKeyName(string table)
     {
-        var result = $"p_{ToSnakeCase(table)}";
+        var result = $"p_{NamingConvention(table)}";
         ValidateNameMaxLength(result);
         return result;
     }
 
     public static string CreateAlternateKeyName(string table, string name)
     {
-        var result = $"a_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+        var result = $"a_{NamingConvention(table)}_{NamingConvention(name)}";
         return result;
     }
 
     public static string CreateDatabaseName(string table, string name)
     {
-        var result = $"i_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+        var result = $"i_{NamingConvention(table)}_{NamingConvention(name)}";
         ValidateNameMaxLength(result);
         return result;
     }
 
     public static string CreateConstraintName(string table, string name)
     {
-        var result = $"f_{ToSnakeCase(table)}_{ToSnakeCase(name)}";
+        var result = $"f_{NamingConvention(table)}_{NamingConvention(name)}";
         ValidateNameMaxLength(result);
         return result;
     }
 
     public static string DropConstraintName(string table, string name)
     {
-        var result = $"d_{ToSnakeCase(table)}_{ToHashName(ToSnakeCase(name))}";
+        var result = $"d_{NamingConvention(table)}_{ToHashName(NamingConvention(name))}";
         ValidateNameMaxLength(result);
         return result;
     }

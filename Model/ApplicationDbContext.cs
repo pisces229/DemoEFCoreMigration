@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 namespace Model;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    : IdentityDbContext<AspUser, AspRole, Guid, AspUserClaim, AspUserRole, AspUserLogin, AspRoleClaim, AspUserToken>(options)
 {
 
     #region Entities

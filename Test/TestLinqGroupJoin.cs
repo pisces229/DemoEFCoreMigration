@@ -22,7 +22,7 @@ public class TestLinqGroupJoin : BaseTest
             .ToListAsync();
     }
 
-    [TestMethod("GroupJoinSelectMany")]
+    [TestMethod(DisplayName = "GroupJoinSelectMany")]
     public async Task GroupJoinSelectMany()
     {
         var query = _dbContext.HumanBody;
