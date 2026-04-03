@@ -14,10 +14,27 @@ public class BaseTest
     public Task TestInitialize()
     {
         Console.WriteLine("TestInitialize");
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
         var configurationRoot = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appSettings.json")
+            .AddJsonFile($"appSettings.{environment}.json", optional: true) // Load environment-specific config
+            .AddEnvironmentVariables() // Load environment variables (overrides file config)
             .Build();
+
+        // Replace password placeholders with environment variables
+        var connectionStrings = configurationRoot.GetSection("ConnectionStrings").Get<Dictionary<string, string>>()
+            ?? new Dictionary<string, string>();
+
+        foreach (var key in connectionStrings.Keys.ToList())
+        {
+            var connStr = connectionStrings[key];
+            connStr = connStr?.Replace("{SQLSERVER_PASSWORD}", Environment.GetEnvironmentVariable("SQLSERVER_PASSWORD") ?? "")
+                              .Replace("{POSTGRESQL_PASSWORD}", Environment.GetEnvironmentVariable("POSTGRESQL_PASSWORD") ?? "")
+                ?? "";
+            connectionStrings[key] = connStr;
+        }
+
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         dbContextOptionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
 
@@ -37,7 +54,7 @@ public class BaseTest
         switch (configurationRoot.GetValue<string>("DbContext")!)
         {
             case "SqlServer":
-                dbContextOptionsBuilder.UseSqlServer(configurationRoot.GetConnectionString("SqlServer"),
+                dbContextOptionsBuilder.UseSqlServer(connectionStrings["SqlServer"],
                     opts =>
                     {
                         opts.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
@@ -46,7 +63,7 @@ public class BaseTest
                     });
                 break;
             case "PostgreSQL":
-                dbContextOptionsBuilder.UseNpgsql(configurationRoot.GetConnectionString("PostgreSQL"),
+                dbContextOptionsBuilder.UseNpgsql(connectionStrings["PostgreSQL"],
                     opts =>
                     {
                         opts.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
@@ -56,7 +73,7 @@ public class BaseTest
                     .UseSnakeCaseNamingConvention();
                 break;
             case "Sqlite":
-                dbContextOptionsBuilder.UseSqlite(configurationRoot.GetConnectionString("Sqlite"),
+                dbContextOptionsBuilder.UseSqlite(connectionStrings["Sqlite"],
                     opts =>
                     {
                         opts.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);

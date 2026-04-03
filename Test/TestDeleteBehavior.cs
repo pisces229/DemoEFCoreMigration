@@ -16,11 +16,22 @@ public class TestDeleteBehavior
     public void TestInitialize()
     {
         Console.WriteLine("TestInitialize");
+        var environment = System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
         var configurationRoot = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appSettings.json")
+            .AddJsonFile($"appSettings.{environment}.json", optional: true) // Load environment-specific config
+            .AddEnvironmentVariables() // Load environment variables (overrides file config)
             .Build();
         var connectionString = configurationRoot.GetConnectionString("SqlServer");
+
+        // Replace password placeholders with environment variables
+        if (!string.IsNullOrEmpty(connectionString))
+        {
+            connectionString = connectionString
+                .Replace("{SQLSERVER_PASSWORD}", System.Environment.GetEnvironmentVariable("SQLSERVER_PASSWORD") ?? "")
+                .Replace("{POSTGRESQL_PASSWORD}", System.Environment.GetEnvironmentVariable("POSTGRESQL_PASSWORD") ?? "");
+        }
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         dbContextOptionsBuilder.LogTo(message => Console.WriteLine(message), LogLevel.Information);
         dbContextOptionsBuilder.EnableSensitiveDataLogging();
