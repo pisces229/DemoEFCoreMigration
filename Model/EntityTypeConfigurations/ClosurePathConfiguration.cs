@@ -8,6 +8,9 @@ public class ClosurePathConfiguration : IEntityTypeConfiguration<ClosurePath>
 
         builder.HasKey(e => new { e.AncestorId, e.DescendantId });
 
+        // Index on DescendantId for efficient ancestor queries (WHERE DescendantId = X)
+        builder.HasIndex(e => e.DescendantId);
+
         builder.HasOne(d => d.Ancestor)
             .WithMany(p => p.DescendantPaths)
             .HasForeignKey(d => d.AncestorId)

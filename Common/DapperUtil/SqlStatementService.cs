@@ -1,12 +1,23 @@
 using Dapper;
+using System.Text.RegularExpressions;
 
 namespace Common.DapperUtil;
 
 public static class SqlStatementService
 {
+    /// <summary>
+    /// Converts PascalCase class name to snake_case table name for databases using snake_case naming convention.
+    /// </summary>
+    private static string GetTableName<T>() where T : class
+    {
+        var typeName = typeof(T).Name;
+        // Convert PascalCase to snake_case: "AppTable" -> "app_table"
+        return Regex.Replace(typeName, "(?<!^)(?=[A-Z])", "_").ToLowerInvariant();
+    }
+
     public static string CreateSelect<T>(string where) where T : class
     {
-        return $"SELECT * FROM {typeof(T).Name} {where}";
+        return $"SELECT * FROM {GetTableName<T>()} {where}";
     }
     public static string CreateInsert<T>(DynamicParameters insertParameters) where T : class
     {
@@ -17,7 +28,7 @@ public static class SqlStatementService
             insert.Add(f);
             values.Add($"@{f}");
         });
-        return $"INSERT INTO {typeof(T).Name} ({string.Join(",", insert)}) VALUES ({string.Join(",", values)})";
+        return $"INSERT INTO {GetTableName<T>()} ({string.Join(",", insert)}) VALUES ({string.Join(",", values)})";
     }
     public static string CreateUpdate<T>(DynamicParameters setParameters, string where) where T : class
     {
@@ -28,7 +39,7 @@ public static class SqlStatementService
             {
                 set.Add($"{f} = @{f}");
             });
-            return $"UPDATE {typeof(T).Name} SET {string.Join(",", set)} {where} ";
+            return $"UPDATE {GetTableName<T>()} SET {string.Join(",", set)} {where} ";
         }
         else
         {
@@ -39,7 +50,7 @@ public static class SqlStatementService
     {
         if (!string.IsNullOrEmpty(where))
         {
-            return $"DELETE FROM {typeof(T).Name} {where} ";
+            return $"DELETE FROM {GetTableName<T>()} {where} ";
         }
         else
         {

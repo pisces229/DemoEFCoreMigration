@@ -19,7 +19,8 @@ public class AppTableConfiguration : IEntityTypeConfiguration<AppTable>
 
         builder.HasKey(e => e.Id);
         builder.Property(e => e.Id).ValueGeneratedNever();
-        builder.HasAlternateKey(e => e.String);
+        // NOTE: Unique constraint is managed via HasIndex below, not HasAlternateKey
+        // builder.HasAlternateKey(e => e.String);
 
         // [Enum]
         // EnumToStringConverter

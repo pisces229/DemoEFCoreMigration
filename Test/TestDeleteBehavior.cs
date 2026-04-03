@@ -20,7 +20,7 @@ public class TestDeleteBehavior
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appSettings.json")
             .Build();
-        var connectionString = configurationRoot.GetConnectionString("Demo");
+        var connectionString = configurationRoot.GetConnectionString("SqlServer");
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         dbContextOptionsBuilder.LogTo(message => Console.WriteLine(message), LogLevel.Information);
         dbContextOptionsBuilder.EnableSensitiveDataLogging();
@@ -250,9 +250,9 @@ public class TestDeleteBehavior
     public async Task TestCleanup()
     {
         Console.WriteLine("TestCleanup");
-        //_demoContext.HumanLimb.RemoveRange(await _demoContext.HumanLimb.ToListAsync());
-        //_demoContext.HumanHead.RemoveRange(await _demoContext.HumanHead.ToListAsync());
-        //await _demoContext.SaveChangesAsync();
+        _demoContext.HumanLimb.RemoveRange(await _demoContext.HumanLimb.ToListAsync());
+        _demoContext.HumanBody.RemoveRange(await _demoContext.HumanBody.ToListAsync());
+        await _demoContext.SaveChangesAsync();
         await _demoContext.DisposeAsync();
     }
 

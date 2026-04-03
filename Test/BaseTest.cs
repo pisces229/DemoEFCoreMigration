@@ -20,7 +20,17 @@ public class BaseTest
             .Build();
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         dbContextOptionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
-        dbContextOptionsBuilder.EnableSensitiveDataLogging();
+
+        // Only enable sensitive data logging in development
+        var isDevelopment = string.Equals(
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+            "Development",
+            StringComparison.OrdinalIgnoreCase);
+        if (isDevelopment)
+        {
+            dbContextOptionsBuilder.EnableSensitiveDataLogging();
+        }
+
         // (Lazy loading)
         //dbContextOptionsBuilder.UseLazyLoadingProxies();
 

@@ -10,7 +10,7 @@ public class HumanLimbConfiguration : IEntityTypeConfiguration<HumanLimb>
         builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.Ulid)
-            .HasMaxLength(10)
+            .HasMaxLength(26)
             .IsUnicode(false)
             .IsRequired();
 

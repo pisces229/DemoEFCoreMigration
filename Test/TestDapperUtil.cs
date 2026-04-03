@@ -6,8 +6,10 @@ using System.Text;
 
 namespace Test;
 
+[TestClass]
 public class TestDapperUtil : BaseTest
 {
+    [TestMethod(DisplayName = "DoDapperSqlStatement")]
     public async Task DoDapperSqlStatement()
     {
         using (var connection = _dbContext.Database.GetDbConnection())

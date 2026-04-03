@@ -2,7 +2,7 @@ using Model.RelEntities;
 
 namespace Model.EntityTypeConfigurations;
 
-internal class LinkFirstContentConfiguration : IEntityTypeConfiguration<LinkFirstContent>
+public class LinkFirstContentConfiguration : IEntityTypeConfiguration<LinkFirstContent>
 {
     public void Configure(EntityTypeBuilder<LinkFirstContent> builder)
     {

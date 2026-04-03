@@ -1,6 +1,6 @@
 namespace Model.EntityTypeConfigurations;
 
-internal class AnimalCatConfiguration : IEntityTypeConfiguration<AnimalCat>
+public class AnimalCatConfiguration : IEntityTypeConfiguration<AnimalCat>
 {
     public void Configure(EntityTypeBuilder<AnimalCat> builder)
     {

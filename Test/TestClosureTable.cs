@@ -63,6 +63,14 @@ public class TestClosureTable : BaseTest
         return rootNode;
     }
 
+    public override async Task TestCleanup()
+    {
+        var cancellationToken = default(CancellationToken);
+        await _dbContext.ClosurePath.ExecuteDeleteAsync(cancellationToken);
+        await _dbContext.ClosureNode.ExecuteDeleteAsync(cancellationToken);
+        await base.TestCleanup();
+    }
+
     [TestMethod(DisplayName = "ClosureTable_AddAndRemove")]
     public async Task ClosureTable_AddAndRemove()
     {
@@ -76,20 +84,15 @@ public class TestClosureTable : BaseTest
             .ToListAsync();
 
         Console.WriteLine($"Total paths created: {paths.Count}");
-        // Commenting this out because 5 branches 5 deep is too large to print nicely!
-        foreach (var path in paths)
+        // Commenting this out because 3 branches 3 deep is too large to print nicely!
+        foreach (var path in paths.Take(20))
         {
             Console.WriteLine($"{path.Ancestor.Name} -> {path.Descendant.Name} (Depth: {path.Depth})");
         }
 
-        // 刪除資料
-        //await _dbContext.ClosurePath.ExecuteDeleteAsync();
-        //await _dbContext.ClosureNode.ExecuteDeleteAsync();
-
-        //var pathCount = await _dbContext.ClosurePath.CountAsync();
-        //var nodeCount = await _dbContext.ClosureNode.CountAsync();
-        //Assert.AreEqual(0, pathCount);
-        //Assert.AreEqual(0, nodeCount);
+        // Verify initial state
+        Assert.IsNotNull(rootNode);
+        Assert.IsTrue(paths.Count > 0, "Should have created closure paths");
     }
 
     [TestMethod(DisplayName = "ClosureTable_Move")]

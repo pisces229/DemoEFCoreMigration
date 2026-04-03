@@ -1,6 +1,6 @@
 namespace Model.EntityTypeConfigurations;
 
-internal class LinkSubContentConfiguration : IEntityTypeConfiguration<LinkSubContent>
+public class LinkSubContentConfiguration : IEntityTypeConfiguration<LinkSubContent>
 {
     public void Configure(EntityTypeBuilder<LinkSubContent> builder)
     {

@@ -56,13 +56,22 @@ try
             }
         }
     }
-    // DropConstraintScript
-    {
-        Console.WriteLine("DropConstraintScript:" + DbMaintenanceScript.DropConstraintScript);
-        await dbContext.Database.ExecuteSqlRawAsync(DbMaintenanceScript.DropConstraintScript);
-    }
 
-    await new EnsureData(dbContext).RunAsync();
+    // DropConstraintScript and EnsureData in a single transaction
+    using (var transaction = await dbContext.Database.BeginTransactionAsync())
+    {
+        try
+        {
+            await dbContext.Database.ExecuteSqlRawAsync(DbMaintenanceScript.DropConstraintScript);
+            await new EnsureData(dbContext).RunAsync();
+            await transaction.CommitAsync();
+        }
+        catch (Exception)
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
 
     Console.WriteLine("DbMigration Complete...");
 }

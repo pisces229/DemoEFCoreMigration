@@ -10,6 +10,13 @@ namespace Test;
 [TestClass]
 public class TestApp : BaseTest
 {
+    public override async Task TestCleanup()
+    {
+        var cancellationToken = default(CancellationToken);
+        await _dbContext.AppTable.ExecuteDeleteAsync(cancellationToken);
+        await base.TestCleanup();
+    }
+
     [TestMethod(DisplayName = "Count")]
     public async Task Count()
     {

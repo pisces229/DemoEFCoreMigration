@@ -6,6 +6,11 @@ namespace Common.DapperUtil;
 
 public static class SqlConditionUtility
 {
+    /// <summary>
+    /// WARNING: This overload directly concatenates the condition string without parameterization.
+    /// Only use this with compile-time constants or fully validated input to avoid SQL injection.
+    /// Prefer the parameterized Add overloads instead.
+    /// </summary>
     public static void Add(StringBuilder sql, string condition)
         => sql.Append($"{StratWithWhereOrAnd(sql)} {condition} ");
     public static void Add(StringBuilder sql, DynamicParameters dynamicParameters,
@@ -73,6 +78,10 @@ public static class SqlConditionUtility
                 break;
         }
     }
+    /// <summary>
+    /// Determines whether to append WHERE or AND based on whether the SQL already contains a WHERE clause.
+    /// This logic assumes the StringBuilder only contains the WHERE clause portion (no ORDER BY, LIMIT, etc).
+    /// </summary>
     private static string StratWithWhereOrAnd(StringBuilder sql) => sql.Length == 0 ? " WHERE" : " AND";
     private static string GetOperator(SqlOperatorType sqlOperator)
         => sqlOperator switch

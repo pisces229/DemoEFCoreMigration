@@ -136,12 +136,12 @@ public class TestFamily : BaseTest
                 new FamilyChild1 { Name = "Child1-R1" },
                 new FamilyChild1 { Name = "Child1-R2" },
             ],
-            // FamilyChild2 =
-            // [
-            //     new FamilyChild2 { Name = "Child2-R1" },
-            //     new FamilyChild2 { Name = "Child2-R2" },
-            //     new FamilyChild2 { Name = "Child2-R3" },
-            // ],
+            FamilyChild2 =
+            [
+                new FamilyChild2 { Name = "Child2-R1" },
+                new FamilyChild2 { Name = "Child2-R2" },
+                new FamilyChild2 { Name = "Child2-R3" },
+            ],
         };
         await _dbContext.FamilyParent.AddAsync(parent, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
