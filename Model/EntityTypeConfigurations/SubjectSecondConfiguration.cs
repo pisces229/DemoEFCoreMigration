@@ -1,0 +1,14 @@
+﻿namespace Model.EntityTypeConfigurations;
+
+public class SubjectSecondConfiguration : IEntityTypeConfiguration<SubjectSecond>
+{
+    public void Configure(EntityTypeBuilder<SubjectSecond> builder)
+    {
+        builder.ToTable(t => t.HasComment("SubjectSecond"));
+
+        builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
+
+        builder.Property(e => e.Name).HasMaxLength(50).IsRequired();
+    }
+}

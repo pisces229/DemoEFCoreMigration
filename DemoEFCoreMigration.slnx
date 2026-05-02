@@ -1,0 +1,15 @@
+﻿<Solution>
+  <Folder Name="/Project Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Packages.props" />
+    <File Path="Dockerfile.plpgsql-check" />
+    <File Path="README.md" />
+    <File Path="Sqlite.md" />
+    <File Path="SqlServer.md" />
+    <File Path="PostgreSQL.md" />
+  </Folder>
+  <Project Path="Common/Common.csproj" />
+  <Project Path="DbMigration/DbMigration.csproj" />
+  <Project Path="Model/Model.csproj" />
+  <Project Path="IntegrationTest/IntegrationTest.csproj" />
+</Solution>

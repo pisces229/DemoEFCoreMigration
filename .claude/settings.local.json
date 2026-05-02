@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Users/pisce/Documents/Github/DemoEFCoreMigration/Model/Migrations -type f -name *.cs)",
+      "Bash(xargs grep:*)",
+      "Bash(dotnet build:*)",
+      "Bash(find:*)",
+      "Bash(ls -la /c/Users/pisce/Documents/Github/DemoEFCoreMigration/Model/Entities/*.cs)",
+      "Bash(xargs -I {} basename {})",
+      "Skill(code-review:code-review)"
+    ]
+  }
+}
