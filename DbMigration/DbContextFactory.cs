@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Model;
@@ -47,8 +48,8 @@ public class DbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext
             case "PostgreSQL":
                 dbContextOptionsBuilder.UseNpgsql(connectionStrings["PostgreSQL"],
                     t => t.MigrationsHistoryTable("__ef_migrations_history"))
-                    .UseSnakeCaseNamingConvention();
-                //.ReplaceService<IMigrationsSqlGenerator, UsageNpgsqlMigrationsSqlGenerator>();
+                    .UseSnakeCaseNamingConvention()
+                    .ReplaceService<IMigrationsSqlGenerator, UsageNpgsqlMigrationsSqlGenerator>();
                 break;
             case "Sqlite":
                 dbContextOptionsBuilder.UseSqlite(connectionStrings["Sqlite"]);

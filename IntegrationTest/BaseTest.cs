@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 
 namespace IntegrationTest;
@@ -47,9 +47,9 @@ public abstract class BaseTest
     private static string ToSchemaName(string fullClassName)
     {
         var name = fullClassName.Replace('.', '_').ToLowerInvariant();
-        if (name.Length <= DbContextUtil.MaxNameLength) return name;
-
-        var suffix = "_" + DbContextUtil.ToHashName(fullClassName);
-        return name[..(DbContextUtil.MaxNameLength - suffix.Length)] + suffix;
+        if (name.Length <= DbContextUtil.MaxNameLength)
+            return name;
+        return name[..(DbContextUtil.MaxNameLength - DbContextUtil.HashNameLength)]
+            + DbContextUtil.ToHashName(name);
     }
 }
