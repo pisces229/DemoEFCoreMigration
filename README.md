@@ -11,6 +11,14 @@
 ```
 dotnet tool install --global dotnet-ef
 
+dotnet ef --version
+
+dotnet tool update --global dotnet-ef
+
+dotnet tool update --global dotnet-ef --version <x.y.z>
+
+dotnet tool uninstall --global dotnet-ef
+
 dotnet ef migrations add Initialize --project Model/Model.csproj --startup-project DbMigration --context ApplicationDbContext --output-dir Migrations -v
 ```
 
