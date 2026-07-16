@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json;
 
 using Microsoft.Extensions.Logging;
 namespace IntegrationTest;
@@ -10,30 +10,32 @@ namespace IntegrationTest;
 [TestClass]
 public class TestVehicle : BaseTest
 {
+    private static readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
+
     [TestMethod]
     public async Task Query()
     {
         {
             var r = await _dbContext.VehicleBase.ToListAsync();
-            _logger.LogInformation("{Message}", JsonConvert.SerializeObject(r, Formatting.Indented));
+            _logger.LogInformation("{Message}", JsonSerializer.Serialize(r, _jsonOptions));
         }
         {
             var r = await _dbContext.VehicleBase.OfType<VehicleSmallCar>().ToListAsync();
-            _logger.LogInformation("{Message}", JsonConvert.SerializeObject(r, Formatting.Indented));
+            _logger.LogInformation("{Message}", JsonSerializer.Serialize(r, _jsonOptions));
 
         }
         {
             var r = await _dbContext.VehicleBase.OfType<VehicleLargeCar>().ToListAsync();
-            _logger.LogInformation("{Message}", JsonConvert.SerializeObject(r, Formatting.Indented));
+            _logger.LogInformation("{Message}", JsonSerializer.Serialize(r, _jsonOptions));
         }
         {
             var r = await _dbContext.VehicleSmallCar.ToListAsync();
-            _logger.LogInformation("{Message}", JsonConvert.SerializeObject(r, Formatting.Indented));
+            _logger.LogInformation("{Message}", JsonSerializer.Serialize(r, _jsonOptions));
 
         }
         {
             var r = await _dbContext.VehicleLargeCar.ToListAsync();
-            _logger.LogInformation("{Message}", JsonConvert.SerializeObject(r, Formatting.Indented));
+            _logger.LogInformation("{Message}", JsonSerializer.Serialize(r, _jsonOptions));
         }
     }
 
